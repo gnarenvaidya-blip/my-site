@@ -1,0 +1,37 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor and IDE directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Office temporary lock files
+~$*.pptx
+~$*.docx
+~$*.xlsx
+
+# Local backup & temporary files
+index_backup_*.html
+*.bak
+*.tmp
+*.log
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Node / Build artifacts (if added later)
+node_modules/
+dist/
+build/
