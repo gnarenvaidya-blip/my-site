@@ -408,6 +408,12 @@
                         <button onclick="scrollToCreationSection('sec-alignment')" class="px-3.5 py-2 rounded-lg bg-stone-900/90 hover:bg-stone-800 text-amber-100 border border-dndgold-500/40 font-bold text-xs flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-scale-balanced text-sky-400"></i> 4. Moral Alignment
                         </button>
+                        <a href="https://www.dndbeyond.com/campaigns/join/81895293217380957" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-sky-900/90 hover:bg-sky-700 text-sky-100 border border-sky-400/60 font-bold text-xs flex items-center gap-1.5 shadow transition">
+                            <i class="fa-solid fa-dragon text-sky-300"></i> Join D&amp;D Beyond Campaign
+                        </a>
+                        <button onclick="toggleDndBeyondModal()" class="px-3.5 py-2 rounded-lg bg-emerald-950/90 hover:bg-emerald-800 text-emerald-200 border border-emerald-500/50 font-bold text-xs flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-cloud-arrow-down text-emerald-400"></i> Fetch Character Sheet
+                        </button>
                         <button onclick=" updateAtmosphereBackground('all'); showToast('Restored general Runeterra background', 'info');" class="px-3 py-2 rounded-lg bg-stone-950/90 hover:bg-stone-800 text-dndgold-300 border border-stone-700 font-bold text-xs flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-image"></i> Reset Background
                         </button>
@@ -1515,12 +1521,12 @@
         </div>
     </div>
 
-    <!-- D&D Beyond Integration & Account Linking Modal -->
-    <div id="dndBeyondModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel max-w-2xl w-full max-h-[90vh] rounded-2xl p-6 overflow-y-auto custom-scrollbar border-2 border-sky-500 shadow-2xl">
+    <!-- D&D Beyond Integration & Campaign / Character Sheet Fetcher Modal -->
+    <div id="dndBeyondModal" class="fixed inset-0 bg-black/85 z-[120] hidden flex items-center justify-center p-4">
+        <div class="glass-panel max-w-3xl w-full max-h-[90vh] rounded-2xl p-6 overflow-y-auto custom-scrollbar border-2 border-sky-500 shadow-2xl">
             <div class="flex items-center justify-between border-b-2 border-sky-500/60 pb-3 mb-4">
-                <h2 class="font-cinzel font-bold text-lg text-sky-300 flex items-center gap-2">
-                    <i class="fa-solid fa-cloud text-sky-400"></i> D&D Beyond Inventory Link
+                <h2 class="font-mangoli text-lg md:text-xl text-sky-300 flex items-center gap-2">
+                    <i class="fa-solid fa-dragon text-sky-400"></i> D&amp;D Beyond Campaign &amp; Live Character Sheet Sync
                 </h2>
                 <button onclick="toggleDndBeyondModal()" class="text-sky-300 hover:text-white text-lg font-bold p-1">
                     <i class="fa-solid fa-xmark"></i>
@@ -1528,19 +1534,42 @@
             </div>
 
             <div class="space-y-5 text-xs text-amber-100">
-                <!-- Step 1: Account / Character Link Input -->
-                <div class="bg-sky-950/60 p-4 rounded-xl border border-sky-500/40 space-y-2.5">
+                <!-- Active Running Campaign Banner (Pre-linked to Campaign #8189529) -->
+                <div class="bg-gradient-to-r from-sky-950/90 via-stone-900/95 to-indigo-950/90 p-4 rounded-xl border border-sky-400/60 shadow-lg space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-300 font-bold block">Active Running Campaign Linked</span>
+                            <h3 id="ddbCampaignTitleDisplay" class="font-mangoli text-base md:text-lg text-amber-100">
+                                D&amp;D Legend of Runeterra's Enigma (Campaign #8189529)
+                            </h3>
+                            <p id="ddbCampaignDmDisplay" class="text-[11px] text-sky-200/80 font-mono">
+                                Invite URL: https://www.dndbeyond.com/campaigns/join/81895293217380957
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="https://www.dndbeyond.com/campaigns/join/81895293217380957" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-lg shadow flex items-center gap-1.5">
+                                <i class="fa-solid fa-user-plus"></i> Join Campaign
+                            </a>
+                            <a id="ddbCampaignOpenLink" href="https://www.dndbeyond.com/campaigns/8189529" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-sky-700 hover:bg-sky-600 text-white font-bold rounded-lg shadow flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Campaign Page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Fetch Live Character Sheet & Auto-Discover Campaign Party -->
+                <div class="bg-sky-950/60 p-4 rounded-xl border border-sky-500/40 space-y-3">
                     <div class="flex items-center justify-between">
-                        <label class="font-bold text-sky-300 uppercase tracking-wider block">1. Connect Your Character</label>
+                        <label class="font-bold text-sky-300 uppercase tracking-wider block">1. Fetch Live Character Sheet &amp; Campaign Roster</label>
                         <span id="linkedCharacterBadge" class="text-[10px] px-2 py-0.5 rounded bg-sky-900 text-sky-200 border border-sky-400/50">Not Connected</span>
                     </div>
-                    <p class="text-amber-200/80 leading-relaxed text-[11px]">
-                        Enter your D&D Beyond Character URL or Character ID to bind your live inventory session.
+                    <p class="text-amber-200/85 leading-relaxed text-[11px]">
+                        Set your D&amp;D Beyond character's privacy to <strong>Public</strong> (<em>Character Settings → Character Privacy → Public</em>), then paste your <strong>Character URL or ID</strong> below. It will fetch your live <strong>Stats, Class, Level, Gold, Inventory</strong> AND automatically discover <strong>every other Character in your Campaign</strong>!
                     </p>
-                    <div class="flex gap-2">
-                        <input id="dndBeyondUrlInput" type="text" placeholder="https://www.dndbeyond.com/characters/12345678 or ID (12345678)" class="flex-grow bg-black/70 border border-sky-500/50 rounded-lg p-2 text-sky-100 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-sky-400">
-                        <button onclick="saveDndBeyondLink()" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg shadow text-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-link"></i> Link
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input id="dndBeyondUrlInput" type="text" placeholder="Paste https://www.dndbeyond.com/characters/123456789 or Character ID" class="flex-grow bg-black/70 border border-sky-500/50 rounded-lg p-2.5 text-sky-100 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <button onclick="saveDndBeyondLink()" id="ddbFetchBtn" class="px-4 py-2.5 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black rounded-lg shadow text-xs flex items-center justify-center gap-1.5 whitespace-nowrap">
+                            <i class="fa-solid fa-cloud-arrow-down"></i> Fetch Sheet &amp; Campaign
                         </button>
                     </div>
                     <div id="characterDeepLinkBox" class="hidden pt-1 flex items-center justify-between text-[11px] text-sky-300">
@@ -1549,19 +1578,60 @@
                             Open Sheet in New Tab <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                         </a>
                     </div>
+
+                    <!-- Live Fetched Character Sheet Display Card -->
+                    <div id="ddbLiveCharacterCard" class="hidden mt-3 p-4 rounded-xl bg-stone-950/95 border-2 border-dndgold-500/70 space-y-3 shadow-xl">
+                        <!-- Populated dynamically by renderFetchedDndBeyondCharacter() -->
+                    </div>
+
+                    <!-- Auto-Discovered Campaign Party Roster -->
+                    <div id="ddbCampaignPartyBox" class="hidden mt-3 p-4 rounded-xl bg-stone-900/95 border border-sky-400/50 space-y-3">
+                        <div class="flex items-center justify-between border-b border-sky-500/30 pb-2">
+                            <strong class="font-mangoli text-sm text-sky-300 flex items-center gap-2">
+                                <i class="fa-solid fa-users text-dndgold-400"></i>
+                                <span id="ddbPartyRosterHeading">Campaign Party Characters</span>
+                            </strong>
+                            <span id="ddbPartyCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-500/40 font-mono">0 Characters</span>
+                        </div>
+                        <div id="ddbCampaignPartyGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Step 2: Instant 1-Click Console Importer -->
+                <!-- Step 1B: 1-Click Campaign Page Console Extractor (Works even for Private Sheets!) -->
+                <div class="bg-stone-900/90 p-4 rounded-xl border border-emerald-500/40 space-y-2.5">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
+                        <strong class="font-mangoli text-emerald-300 text-sm block flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-emerald-400"></i> Sync Entire Campaign Page Directly (Even Private Sheets)
+                        </strong>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">Works on Campaign #8189529</span>
+                    </div>
+                    <p class="text-amber-200/80 leading-relaxed text-[11px]">
+                        Because D&amp;D Beyond requires your login cookie to view the Campaign Page directly, click <strong>1. Copy Campaign Extractor</strong> below, open your <a href="https://www.dndbeyond.com/campaigns/8189529" target="_blank" class="text-sky-400 underline font-bold">D&amp;D Beyond Campaign Page</a>, press <kbd class="px-1.5 py-0.5 bg-black rounded border border-stone-600 text-amber-300">F12</kbd> (Console), paste &amp; press Enter. Then paste the copied JSON below!
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <button onclick="copyCampaignExtractorScript()" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded-lg shadow text-xs flex items-center justify-center gap-1.5 whitespace-nowrap">
+                            <i class="fa-solid fa-copy"></i> 1. Copy Campaign Extractor
+                        </button>
+                        <input id="ddbCampaignJsonInput" type="text" placeholder="2. Paste copied Campaign JSON here..." class="flex-grow bg-black/70 border border-emerald-500/40 rounded-lg p-2 text-emerald-100 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                        <button onclick="importCampaignJsonPayload()" class="px-3.5 py-2 bg-dndgold-500 hover:bg-dndgold-400 text-stone-950 font-black rounded-lg shadow text-xs whitespace-nowrap">
+                            3. Load Party
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Instant 1-Click Console Importer (Export Marketplace Cart -> D&D Beyond) -->
                 <div class="bg-stone-900/90 p-4 rounded-xl border border-dndgold-500/40 space-y-3">
                     <div class="flex justify-between items-center">
-                        <strong class="font-cinzel text-dndgold-400 text-sm block">2. Automatic Console / Bookmarklet Script</strong>
+                        <strong class="font-cinzel text-dndgold-400 text-sm block">2. Export Marketplace Cart to D&amp;D Beyond</strong>
                         <span class="text-[10px] px-2 py-0.5 rounded bg-dndgold-500/20 text-dndgold-300 font-mono">1-Click Auto Import</span>
                     </div>
                     <p class="text-amber-200/80 leading-relaxed text-[11px]">
-                        Open your character on D&D Beyond in another tab, press <kbd class="px-1.5 py-0.5 bg-black rounded border border-stone-600 text-amber-300">F12</kbd> (Console), and paste this generated script. It will automatically populate your character inventory and deduct gold from your pouch!
+                        Open your character on D&amp;D Beyond in another tab, press <kbd class="px-1.5 py-0.5 bg-black rounded border border-stone-600 text-amber-300">F12</kbd> (Console), and paste this generated script to log your purchased items and gold deduction.
                     </p>
                     <button onclick="copyDndBeyondScript()" class="w-full py-2.5 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold rounded-lg shadow text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-terminal"></i> Copy 1-Click Importer Script
+                        <i class="fa-solid fa-terminal"></i> Copy 1-Click Cart Exporter Script
                     </button>
                 </div>
 
@@ -1569,14 +1639,14 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="bg-stone-900/90 p-3.5 rounded-xl border border-stone-700 space-y-2">
                         <strong class="text-amber-300 text-xs block font-bold">Formatted Equipment Text</strong>
-                        <p class="text-[11px] text-stone-400">Copy item names and quantities formatted for D&D Beyond notes or search.</p>
+                        <p class="text-[11px] text-stone-400">Copy item names and quantities formatted for D&amp;D Beyond notes or search.</p>
                         <button onclick="exportCharacterSheet()" class="w-full py-2 bg-stone-800 hover:bg-stone-700 text-amber-200 text-xs font-bold rounded border border-stone-600 flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-copy"></i> Copy Text
                         </button>
                     </div>
 
                     <div class="bg-stone-900/90 p-3.5 rounded-xl border border-stone-700 space-y-2">
-                        <strong class="text-amber-300 text-xs block font-bold">Download VTT / D&D Beyond JSON</strong>
+                        <strong class="text-amber-300 text-xs block font-bold">Download VTT / D&amp;D Beyond JSON</strong>
                         <p class="text-[11px] text-stone-400">Export inventory JSON compatible with Beyond20, Foundry, and Roll20.</p>
                         <button onclick="downloadInventoryJson()" class="w-full py-2 bg-stone-800 hover:bg-stone-700 text-amber-200 text-xs font-bold rounded border border-stone-600 flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-download"></i> Download JSON
@@ -2205,6 +2275,17 @@
                 state.dndBeyondLinkedId = savedLink;
                 updateDndBeyondUIStatus(savedLink);
             }
+            try {
+                const savedChar = localStorage.getItem('runeterra_last_ddb_char');
+                if (savedChar) {
+                    lastFetchedDdbChar = JSON.parse(savedChar);
+                    renderFetchedDndBeyondCharacter(lastFetchedDdbChar);
+                }
+                const savedParty = localStorage.getItem('runeterra_ddb_campaign_party');
+                if (savedParty) {
+                    renderDndBeyondCampaignParty(JSON.parse(savedParty));
+                }
+            } catch (e) {}
         }
 
         function getFullDatabase() {
@@ -2956,17 +3037,26 @@
         }
 
         /* ==========================================================================
-           9. D&D BEYOND INTEGRATION ENGINE
+           9. D&D BEYOND CAMPAIGN & LIVE CHARACTER SHEET INTEGRATION ENGINE
            ========================================================================== */
-        function saveDndBeyondLink() {
-            const input = document.getElementById('dndBeyondUrlInput').value.trim();
-            if (!input) {
-                showToast('Please enter a D&D Beyond Character URL or ID.', 'error');
+        let lastFetchedDdbChar = null;
+
+        async function saveDndBeyondLink(optionalCharId) {
+            const inputEl = document.getElementById('dndBeyondUrlInput');
+            const rawInput = (optionalCharId || (inputEl ? inputEl.value : '')).toString().trim();
+            if (!rawInput) {
+                showToast('Please paste a D&D Beyond Character URL or Character ID.', 'error');
                 return;
             }
 
-            let charId = input;
-            const match = input.match(/characters\/(\d+)/);
+            // If user pasted the campaign join/view link, guide them or extract ID
+            if (rawInput.includes('/campaigns/')) {
+                showToast('Campaign #8189529 is already linked! Paste any Character URL from the campaign (or use Step 1B below) to load the party sheets.', 'info');
+                return;
+            }
+
+            let charId = rawInput;
+            const match = rawInput.match(/characters\/(\d+)/) || rawInput.match(/(\d{6,12})/);
             if (match && match[1]) {
                 charId = match[1];
             }
@@ -2974,11 +3064,367 @@
             state.dndBeyondLinkedId = charId;
             localStorage.setItem('runeterra_dndbeyond_link', charId);
             updateDndBeyondUIStatus(charId);
-            showToast(`Connected D&D Beyond Character: #${charId}!`, 'success');
+
+            await fetchDndBeyondCharacterSheet(charId);
+        }
+
+        async function fetchDndBeyondCharacterSheet(charId) {
+            const btn = document.getElementById('ddbFetchBtn');
+            const cardBox = document.getElementById('ddbLiveCharacterCard');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Fetching Sheet...`;
+            }
+            if (cardBox) {
+                cardBox.classList.remove('hidden');
+                cardBox.innerHTML = `
+                    <div class="text-center py-4 text-sky-300 text-xs font-bold flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-spinner fa-spin text-base"></i>
+                        <span>Contacting D&amp;D Beyond Character Service for #${charId}...</span>
+                    </div>
+                `;
+            }
+
+            const targetUrl = `https://character-service.dndbeyond.com/character/v5/character/${charId}`;
+            const endpoints = [
+                targetUrl,
+                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
+            ];
+
+            let charData = null;
+            for (const url of endpoints) {
+                try {
+                    const res = await fetch(url);
+                    if (!res.ok) continue;
+                    const json = await res.json();
+                    if (json && json.data && json.data.name) {
+                        charData = json.data;
+                        break;
+                    }
+                } catch (err) {
+                    // try next proxy
+                }
+            }
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Fetch Sheet &amp; Campaign`;
+            }
+
+            if (!charData) {
+                if (cardBox) {
+                    cardBox.innerHTML = `
+                        <div class="p-3 rounded-lg bg-red-950/70 border border-red-500/50 text-red-200 text-xs space-y-1.5">
+                            <strong class="text-red-300 block"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Could not fetch Character #${charId}</strong>
+                            <p class="text-[11px]">Make sure this character's privacy is set to <strong>Public</strong> on D&amp;D Beyond (<em>Character Sheet → Manage → Character Settings → Character Privacy → Public</em>), or use the <strong>1-Click Campaign Extractor</strong> below!</p>
+                        </div>
+                    `;
+                }
+                showToast('Character sheet is set to Private or unreachable. Set Privacy to Public on D&D Beyond!', 'error');
+                return;
+            }
+
+            const parsed = parseDndBeyondCharacterData(charData);
+            lastFetchedDdbChar = parsed;
+            localStorage.setItem('runeterra_last_ddb_char', JSON.stringify(parsed));
+
+            renderFetchedDndBeyondCharacter(parsed);
+
+            if (parsed.campaign && Array.isArray(parsed.campaign.characters) && parsed.campaign.characters.length > 0) {
+                localStorage.setItem('runeterra_ddb_campaign_party', JSON.stringify(parsed.campaign));
+                renderDndBeyondCampaignParty(parsed.campaign);
+            }
+
+            showToast(`Loaded ${parsed.name} (Lvl ${parsed.totalLevel} ${parsed.primaryClass}) from D&D Beyond!`, 'success');
+        }
+
+        function parseDndBeyondCharacterData(d) {
+            // Compute ability scores (1=STR, 2=DEX, 3=CON, 4=INT, 5=WIS, 6=CHA)
+            const statNames = { 1: 'STR', 2: 'DEX', 3: 'CON', 4: 'INT', 5: 'WIS', 6: 'CHA' };
+            const statMap = { STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10 };
+
+            (d.stats || []).forEach(s => {
+                if (statNames[s.id] && s.value != null) statMap[statNames[s.id]] = s.value;
+            });
+            (d.bonusStats || []).forEach(s => {
+                if (statNames[s.id] && s.value != null) statMap[statNames[s.id]] += s.value;
+            });
+
+            // Add racial/feat/item stat bonuses from d.modifiers
+            const modGroups = d.modifiers ? Object.values(d.modifiers) : [];
+            const bonusSubTypeMap = {
+                'strength-score': 'STR',
+                'dexterity-score': 'DEX',
+                'constitution-score': 'CON',
+                'intelligence-score': 'INT',
+                'wisdom-score': 'WIS',
+                'charisma-score': 'CHA'
+            };
+            modGroups.forEach(arr => {
+                if (!Array.isArray(arr)) return;
+                arr.forEach(m => {
+                    if (m && m.type === 'bonus' && bonusSubTypeMap[m.subType] && typeof m.value === 'number') {
+                        statMap[bonusSubTypeMap[m.subType]] += m.value;
+                    }
+                });
+            });
+
+            (d.overrideStats || []).forEach(s => {
+                if (statNames[s.id] && s.value != null) statMap[statNames[s.id]] = s.value;
+            });
+
+            // Classes & Level
+            let totalLevel = 0;
+            let primaryClass = 'Fighter';
+            const classLabels = [];
+            (d.classes || []).forEach((c, idx) => {
+                const cName = c.definition?.name || 'Adventurer';
+                const subName = c.subclassDefinition?.name || '';
+                const lvl = c.level || 1;
+                totalLevel += lvl;
+                if (idx === 0) primaryClass = cName;
+                classLabels.push(`${cName}${subName ? ' (' + subName + ')' : ''} ${lvl}`);
+            });
+            if (totalLevel === 0) totalLevel = 1;
+
+            // Currencies -> Total GP
+            const cur = d.currencies || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+            const totalGP = (cur.pp || 0) * 10 + (cur.gp || 0) + (cur.ep || 0) * 0.5 + (cur.sp || 0) * 0.1 + (cur.cp || 0) * 0.01;
+
+            // HP calculation
+            const conMod = Math.floor((statMap.CON - 10) / 2);
+            const maxHp = d.overrideHitPoints || ((d.baseHitPoints || 10) + (d.bonusHitPoints || 0) + (conMod * totalLevel));
+            const currentHp = Math.max(0, maxHp - (d.removedHitPoints || 0));
+
+            // Inventory preview
+            const invItems = (d.inventory || [])
+                .filter(i => i && i.definition && i.definition.name)
+                .map(i => ({
+                    name: i.definition.name,
+                    qty: i.quantity || 1,
+                    equipped: !!i.equipped
+                }));
+
+            return {
+                id: d.id,
+                name: d.name || 'Unknown Champion',
+                username: d.username || '',
+                avatarUrl: d.decorations?.avatarUrl || d.avatarUrl || 'Logo.png',
+                species: d.race?.fullName || d.race?.baseName || 'Runeterran',
+                classSummary: classLabels.join(' / ') || 'Level 1 Adventurer',
+                primaryClass,
+                totalLevel: Math.min(20, Math.max(1, totalLevel)),
+                stats: statMap,
+                currentHp,
+                maxHp,
+                currencies: cur,
+                totalGP: parseFloat(totalGP.toFixed(2)),
+                inventoryCount: invItems.length,
+                topInventory: invItems.slice(0, 8),
+                campaign: d.campaign ? {
+                    id: d.campaign.id,
+                    name: d.campaign.name,
+                    dmUsername: d.campaign.dmUsername,
+                    link: d.campaign.link || `https://www.dndbeyond.com/campaigns/${d.campaign.id}`,
+                    characters: (d.campaign.characters || []).map(ch => ({
+                        characterId: ch.characterId,
+                        characterName: ch.characterName,
+                        username: ch.username,
+                        avatarUrl: ch.avatarUrl || 'Logo.png',
+                        isAssigned: ch.isAssigned
+                    }))
+                } : null
+            };
+        }
+
+        function renderFetchedDndBeyondCharacter(c) {
+            const cardBox = document.getElementById('ddbLiveCharacterCard');
+            if (!cardBox || !c) return;
+            cardBox.classList.remove('hidden');
+
+            const statPills = Object.entries(c.stats).map(([k, v]) => {
+                const mod = Math.floor((v - 10) / 2);
+                const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+                return `
+                    <div class="bg-stone-900 border border-stone-700 rounded-lg p-1.5 text-center">
+                        <span class="text-[9px] text-dndgold-400 font-bold block">${k}</span>
+                        <strong class="text-xs text-white font-mono">${v}</strong>
+                        <span class="text-[10px] text-emerald-400 font-mono block">(${modStr})</span>
+                    </div>
+                `;
+            }).join('');
+
+            const invBadges = (c.topInventory || []).map(i =>
+                `<span class="px-2 py-0.5 rounded bg-stone-900 border border-stone-700 text-[10px] text-amber-200">${i.equipped ? '⚔️ ' : ''}${i.name}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`
+            ).join('');
+
+            cardBox.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-800 pb-3">
+                    <div class="flex items-center gap-3">
+                        <img src="${c.avatarUrl}" alt="${c.name}" onerror="this.src='Logo.png'" class="w-14 h-14 rounded-xl object-cover border-2 border-dndgold-400 shadow">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h4 class="font-mangoli text-base md:text-lg text-amber-100">${c.name}</h4>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-mono">HP: ${c.currentHp}/${c.maxHp}</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-dndgold-300 border border-dndgold-500/40 font-mono"><i class="fa-solid fa-coins mr-1"></i>${c.totalGP.toLocaleString()} GP</span>
+                            </div>
+                            <p class="text-xs text-sky-300 font-bold">${c.species} • ${c.classSummary}</p>
+                            ${c.campaign ? `<p class="text-[10px] text-stone-400 font-mono">Campaign: <strong class="text-amber-200">${c.campaign.name}</strong> (DM: ${c.campaign.dmUsername || 'DM'})</p>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="applyDdbCharacterToMarketplace()" class="px-3.5 py-2 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-lg shadow text-xs flex items-center gap-1.5 self-start sm:self-center whitespace-nowrap">
+                        <i class="fa-solid fa-bolt"></i> Apply Stats to Marketplace
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-6 gap-1.5">
+                    ${statPills}
+                </div>
+
+                ${invBadges ? `
+                <div class="space-y-1">
+                    <span class="text-[10px] uppercase tracking-wider text-stone-400 font-bold block">Sheet Equipment (${c.inventoryCount} total items):</span>
+                    <div class="flex flex-wrap gap-1">${invBadges}</div>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        function applyDdbCharacterToMarketplace() {
+            if (!lastFetchedDdbChar) return;
+            const c = lastFetchedDdbChar;
+
+            const validClasses = ['Paladin', 'Fighter', 'Barbarian', 'Rogue', 'Ranger', 'Monk', 'Wizard', 'Sorcerer', 'Warlock', 'Cleric', 'Druid', 'Bard'];
+            const matchedClass = validClasses.find(vc => vc.toLowerCase() === (c.primaryClass || '').toLowerCase()) || 'Paladin';
+
+            const clsSel = document.getElementById('charClassSelect');
+            if (clsSel) {
+                clsSel.value = matchedClass;
+                handleClassChange();
+            }
+
+            handleLevelChange(c.totalLevel || 1);
+
+            const strVal = (c.stats && c.stats.STR) ? c.stats.STR : 10;
+            const strInput = document.getElementById('charStrInput');
+            if (strInput) strInput.value = strVal;
+            state.strScore = strVal;
+
+            if (typeof c.totalGP === 'number' && c.totalGP > 0) {
+                const goldIn = document.getElementById('charBaseGoldInput');
+                if (goldIn) goldIn.value = c.totalGP;
+                state.baseGold = c.totalGP;
+            }
+
+            updateProfileCalcs();
+            renderMarketplace();
+            showToast(`Applied ${c.name}'s D&D Beyond sheet (${matchedClass}, Lvl ${state.level}, STR ${strVal}${c.totalGP > 0 ? ', ' + c.totalGP + ' GP' : ''})!`, 'success');
+        }
+
+        function renderDndBeyondCampaignParty(campaign) {
+            const box = document.getElementById('ddbCampaignPartyBox');
+            const grid = document.getElementById('ddbCampaignPartyGrid');
+            const countBadge = document.getElementById('ddbPartyCountBadge');
+            const heading = document.getElementById('ddbPartyRosterHeading');
+            const titleDisp = document.getElementById('ddbCampaignTitleDisplay');
+            const dmDisp = document.getElementById('ddbCampaignDmDisplay');
+            const openLink = document.getElementById('ddbCampaignOpenLink');
+
+            if (!box || !grid || !campaign) return;
+
+            if (campaign.name && titleDisp) {
+                titleDisp.innerText = `${campaign.name} (Campaign #${campaign.id || '8189529'})`;
+            }
+            if (campaign.dmUsername && dmDisp) {
+                dmDisp.innerText = `DM: ${campaign.dmUsername} • Invite: https://www.dndbeyond.com/campaigns/join/81895293217380957`;
+            }
+            if (campaign.id && openLink) {
+                openLink.href = `https://www.dndbeyond.com/campaigns/${campaign.id}`;
+            }
+
+            const chars = campaign.characters || [];
+            if (chars.length === 0) {
+                box.classList.add('hidden');
+                return;
+            }
+
+            box.classList.remove('hidden');
+            if (heading) heading.innerText = `${campaign.name || 'Campaign'} Party Roster`;
+            if (countBadge) countBadge.innerText = `${chars.length} Characters`;
+
+            grid.innerHTML = '';
+            chars.forEach(ch => {
+                const card = document.createElement('div');
+                card.className = 'p-2.5 rounded-xl bg-stone-950/90 border border-sky-500/30 hover:border-dndgold-400 flex items-center justify-between gap-2 transition';
+                card.innerHTML = `
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <img src="${ch.avatarUrl || 'Logo.png'}" alt="${ch.characterName}" onerror="this.src='Logo.png'" class="w-10 h-10 rounded-lg object-cover border border-dndgold-500/50 flex-shrink-0">
+                        <div class="min-w-0">
+                            <strong class="text-amber-100 text-xs font-bold block truncate">${ch.characterName}</strong>
+                            <span class="text-[10px] text-sky-300/80 font-mono block truncate">Player: ${ch.username || 'Adventurer'} ${ch.subtitle ? '• ' + ch.subtitle : ''}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 flex-shrink-0">
+                        <button onclick="saveDndBeyondLink('${ch.characterId}')" class="px-2.5 py-1 bg-sky-700 hover:bg-sky-600 text-white font-bold rounded text-[10px] shadow">
+                            Load Sheet
+                        </button>
+                        <a href="https://www.dndbeyond.com/characters/${ch.characterId}" target="_blank" title="Open on D&D Beyond" class="px-2 py-1 bg-stone-800 hover:bg-stone-700 text-amber-200 rounded text-[10px]">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function copyCampaignExtractorScript() {
+            const script = `(function(){
+    const title = (document.querySelector('h1.ddb-campaigns-detail-header-primary-title, h1')?.innerText || 'Runeterra Campaign').trim();
+    const cards = document.querySelectorAll('.ddb-campaigns-character-card, [class*="character-card"]');
+    const chars = [];
+    const seen = new Set();
+    document.querySelectorAll('a[href*="/characters/"]').forEach(a => {
+        const m = a.href.match(/characters\\/(\\d+)/);
+        if (!m || seen.has(m[1])) return;
+        seen.add(m[1]);
+        const card = a.closest('.ddb-campaigns-character-card, li, div');
+        const name = (card?.querySelector('.ddb-campaigns-character-card-header-upper-character-info-primary, h2, h3, h4')?.innerText || a.innerText || ('Character #' + m[1])).trim();
+        const sub = (card?.querySelector('.ddb-campaigns-character-card-header-upper-character-info-secondary')?.innerText || '').trim();
+        const img = card?.querySelector('img')?.src || '';
+        chars.push({ characterId: m[1], characterName: name, username: sub, subtitle: sub, avatarUrl: img });
+    });
+    const payload = JSON.stringify({ id: '8189529', name: title, characters: chars });
+    navigator.clipboard.writeText(payload).then(() => alert('Copied ' + chars.length + ' campaign characters! Paste into the Runeterra website box.')).catch(() => prompt('Copy this JSON and paste into the Runeterra website:', payload));
+})();`;
+            navigator.clipboard.writeText(script).then(() => {
+                showToast('Copied Campaign Extractor! Paste it into F12 Console on your D&D Beyond Campaign tab.', 'success');
+            });
+        }
+
+        function importCampaignJsonPayload() {
+            const raw = (document.getElementById('ddbCampaignJsonInput')?.value || '').trim();
+            if (!raw) {
+                showToast('Paste the Campaign JSON from the Extractor script first!', 'error');
+                return;
+            }
+            try {
+                const parsed = JSON.parse(raw);
+                if (!parsed || !Array.isArray(parsed.characters)) {
+                    showToast('Invalid Campaign JSON format.', 'error');
+                    return;
+                }
+                localStorage.setItem('runeterra_ddb_campaign_party', JSON.stringify(parsed));
+                renderDndBeyondCampaignParty(parsed);
+                showToast(`Imported ${parsed.characters.length} characters from "${parsed.name || 'Campaign'}"!`, 'success');
+            } catch (e) {
+                showToast('Could not parse Campaign JSON. Make sure you pasted the exact output.', 'error');
+            }
         }
 
         function updateDndBeyondUIStatus(charId) {
-            document.getElementById('dndBeyondUrlInput').value = charId;
+            const urlIn = document.getElementById('dndBeyondUrlInput');
+            if (urlIn && charId) urlIn.value = charId;
             const badge = document.getElementById('linkedCharacterBadge');
             const dot = document.getElementById('dndBeyondStatusDot');
             const deepBox = document.getElementById('characterDeepLinkBox');
