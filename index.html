@@ -424,10 +424,10 @@
                     <span id="dndBeyondStatusDot" class="w-2 h-2 rounded-full bg-amber-500" title="Sheet not linked yet"></span>
                 </button>
 
-                <!-- DM Special Market Workshop Trigger (Marketplace Only) -->
-                <button id="headerSpecialMarketBtn" onclick="toggleSpecialMarketModal()" class="hidden px-3 py-1.5 bg-zaun-900/90 hover:bg-zaun-600 text-purple-200 hover:text-white rounded-md border border-purple-500/50 shadow transition-all duration-200 flex items-center gap-1.5 active:scale-95">
-                    <i class="fa-solid fa-hat-wizard text-purple-300"></i>
-                    <span class="hidden sm:inline">DM Special Market</span>
+                <!-- DM Exclusive Special Market Workshop Trigger (Marketplace & DM Only) -->
+                <button id="headerSpecialMarketBtn" onclick="toggleSpecialMarketModal()" class="hidden px-3 py-1.5 bg-zaun-900/90 hover:bg-zaun-600 text-purple-200 hover:text-white rounded-md border border-purple-500/50 shadow transition-all duration-200 flex items-center gap-1.5 active:scale-95" title="DM Exclusive: Edit Special Market">
+                    <i class="fa-solid fa-crown text-amber-300"></i>
+                    <span class="hidden sm:inline">DM Exclusive: Special Market</span>
                 </button>
 
                 <!-- Wishlist Drawer Trigger (Marketplace Only) -->
@@ -1416,26 +1416,34 @@
                         </div>
                     </div>
 
-                    <!-- Region Dropdown Box -->
-                    <div class="flex items-center gap-2 min-w-[240px]">
-                        <label for="specialRegionSelect" class="text-xs font-bold text-dndgold-300 whitespace-nowrap flex items-center gap-1.5">
-                            <i class="fa-solid fa-location-dot text-purple-400"></i> Region:
-                        </label>
-                        <select id="specialRegionSelect" onchange="handleSpecialRegionChange(this.value)" class="w-full bg-stone-950 border-2 border-purple-500/60 rounded-lg px-3 py-1.5 text-xs font-bold text-amber-100 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow">
-                            <option value="all">🌟 All Runeterra Regions</option>
-                            <option value="Bandle">🌳 Bandle City</option>
-                            <option value="Bilgewater">⚓ Bilgewater</option>
-                            <option value="Demacia">🛡️ Demacia</option>
-                            <option value="Frejlord">❄️ Freljord</option>
-                            <option value="Ionia">🌸 Ionia</option>
-                            <option value="iXTAL">🌿 Ixtal</option>
-                            <option value="Noxus">⚔️ Noxus</option>
-                            <option value="Piltover">⚙️ Piltover</option>
-                            <option value="Shadow Isle">👻 Shadow Isles</option>
-                            <option value="Shurima">☀️ Shurima</option>
-                            <option value="Targon">✨ Mount Targon</option>
-                            <option value="Zaun">🧪 Zaun</option>
-                        </select>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <!-- DM Exclusive Workshop Trigger (Visible only when logged in as DM soonaapaanaa) -->
+                        <button id="specialBannerDmEditBtn" onclick="toggleSpecialMarketModal()" class="hidden px-3 py-1.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 text-white font-bold rounded-lg border border-purple-400/60 shadow text-xs flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-crown text-amber-300"></i>
+                            <span>DM Exclusive: Edit Special Market</span>
+                        </button>
+
+                        <!-- Region Dropdown Box -->
+                        <div class="flex items-center gap-2 min-w-[240px]">
+                            <label for="specialRegionSelect" class="text-xs font-bold text-dndgold-300 whitespace-nowrap flex items-center gap-1.5">
+                                <i class="fa-solid fa-location-dot text-purple-400"></i> Region:
+                            </label>
+                            <select id="specialRegionSelect" onchange="handleSpecialRegionChange(this.value)" class="w-full bg-stone-950 border-2 border-purple-500/60 rounded-lg px-3 py-1.5 text-xs font-bold text-amber-100 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer shadow">
+                                <option value="all">🌟 All Runeterra Regions</option>
+                                <option value="Bandle">🌳 Bandle City</option>
+                                <option value="Bilgewater">⚓ Bilgewater</option>
+                                <option value="Demacia">🛡️ Demacia</option>
+                                <option value="Frejlord">❄️ Freljord</option>
+                                <option value="Ionia">🌸 Ionia</option>
+                                <option value="iXTAL">🌿 Ixtal</option>
+                                <option value="Noxus">⚔️ Noxus</option>
+                                <option value="Piltover">⚙️ Piltover</option>
+                                <option value="Shadow Isle">👻 Shadow Isles</option>
+                                <option value="Shurima">☀️ Shurima</option>
+                                <option value="Targon">✨ Mount Targon</option>
+                                <option value="Zaun">🧪 Zaun</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -1724,7 +1732,7 @@
         <div class="glass-panel max-w-3xl w-full max-h-[90vh] rounded-2xl p-6 overflow-y-auto custom-scrollbar border-2 border-purple-500 shadow-2xl">
             <div class="flex items-center justify-between border-b-2 border-purple-500/60 pb-3 mb-4">
                 <h2 class="font-cinzel font-bold text-lg text-purple-300 flex items-center gap-2">
-                    <i class="fa-solid fa-hat-wizard text-purple-400"></i> DM Special Market Workshop
+                    <i class="fa-solid fa-crown text-amber-300"></i> DM Exclusive: Special Market Workshop
                 </h2>
                 <button onclick="toggleSpecialMarketModal()" class="text-purple-300 hover:text-white text-lg font-bold p-1">
                     <i class="fa-solid fa-xmark"></i>
@@ -4580,6 +4588,10 @@
         }
 
         function toggleSpecialMarketModal() {
+            if (!isCurrentUserDM()) {
+                showToast('DM Exclusive: Only the Dungeon Master can edit the Special Market.', 'error');
+                return;
+            }
             const modal = document.getElementById('specialMarketModal');
             modal.classList.toggle('hidden');
             if (!modal.classList.contains('hidden')) {
@@ -4673,15 +4685,16 @@
                 subEl.innerText = subtitles[tabId];
             }
 
-            // Show DM Special Market, Wishlist, and Cart buttons only on the Marketplace tab
+            // Show Wishlist and Cart buttons only on the Marketplace tab; DM Exclusive Special Market only for DM
             const isMarketplace = (tabId === 'marketplace');
-            ['headerSpecialMarketBtn', 'headerWishlistBtn', 'headerCartBtn'].forEach(btnId => {
+            ['headerWishlistBtn', 'headerCartBtn'].forEach(btnId => {
                 const el = document.getElementById(btnId);
                 if (el) {
                     if (isMarketplace) el.classList.remove('hidden');
                     else el.classList.add('hidden');
                 }
             });
+            updateDmExclusiveUI();
             if (!isMarketplace) {
                 const cartDrawer = document.getElementById('cartDrawer');
                 const wishlistDrawer = document.getElementById('wishlistDrawer');
@@ -5611,14 +5624,68 @@
         }
 
         /* ==========================================================================
-           14. SUMMONER LOGIN / SIGN UP (NO EMAIL), INTRO PROFILE & WISHLIST ENGINE
+           14. SUMMONER LOGIN / SIGN UP (NO EMAIL), DM EXCLUSIVE & WISHLIST ENGINE
            ========================================================================== */
         let summonerAuthMode = 'login'; // 'login' | 'signup'
+        const DM_USERNAME = 'soonaapaanaa';
+        const DM_PASSWORD = '12345';
+
+        function isCurrentUserDM() {
+            return Boolean(
+                state.currentUser &&
+                state.currentUser.summonerName &&
+                state.currentUser.summonerName.trim().toLowerCase() === DM_USERNAME &&
+                state.currentUser.isDM === true
+            );
+        }
+
+        function updateDmExclusiveUI() {
+            const isDM = isCurrentUserDM();
+            const isMarketplace = (typeof activeMainTab !== 'undefined' && activeMainTab === 'marketplace');
+            const headerDmBtn = document.getElementById('headerSpecialMarketBtn');
+            const bannerDmBtn = document.getElementById('specialBannerDmEditBtn');
+            const specialModal = document.getElementById('specialMarketModal');
+
+            if (headerDmBtn) {
+                if (isDM && isMarketplace) headerDmBtn.classList.remove('hidden');
+                else headerDmBtn.classList.add('hidden');
+            }
+            if (bannerDmBtn) {
+                if (isDM) bannerDmBtn.classList.remove('hidden');
+                else bannerDmBtn.classList.add('hidden');
+            }
+            if (!isDM && specialModal) {
+                specialModal.classList.add('hidden');
+            }
+
+            // Also toggle any future elements marked with .dm-exclusive-only
+            document.querySelectorAll('.dm-exclusive-only').forEach(el => {
+                if (isDM) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
+        }
 
         function getSummonerAccounts() {
             try {
                 const raw = localStorage.getItem('runeterra_summoner_accounts');
-                return raw ? JSON.parse(raw) : {};
+                const accounts = raw ? JSON.parse(raw) : {};
+                // Always ensure the Dungeon Master account (soonaapaanaa) is registered with its credentials
+                if (!accounts[DM_USERNAME]) {
+                    accounts[DM_USERNAME] = {
+                        summonerName: 'soonaapaanaa',
+                        password: DM_PASSWORD,
+                        isDM: true,
+                        characters: [],
+                        activeCharId: '',
+                        wishlist: [],
+                        cart: {}
+                    };
+                    localStorage.setItem('runeterra_summoner_accounts', JSON.stringify(accounts));
+                } else {
+                    accounts[DM_USERNAME].password = DM_PASSWORD;
+                    accounts[DM_USERNAME].isDM = true;
+                }
+                return accounts;
             } catch (e) {
                 return {};
             }
@@ -5715,15 +5782,22 @@
 
             const accounts = getSummonerAccounts();
             const key = summonerName.toLowerCase();
+            const isDmAccount = (key === DM_USERNAME);
+
+            if (isDmAccount && password !== DM_PASSWORD) {
+                showToast('Invalid Dungeon Master credentials!', 'error');
+                return;
+            }
 
             if (summonerAuthMode === 'signup') {
                 if (accounts[key] && accounts[key].password !== password) {
-                    showToast('That Summoner Name is already registered! Switch to Log In or use your password.', 'error');
+                    showToast('That Summoner Name is already registered! Switch to Sign In or use your password.', 'error');
                     return;
                 }
                 accounts[key] = accounts[key] || {
                     summonerName: summonerName,
                     password: password,
+                    isDM: isDmAccount,
                     characters: [],
                     activeCharId: '',
                     wishlist: [...state.wishlist],
@@ -5731,10 +5805,11 @@
                 };
                 accounts[key].summonerName = summonerName;
                 accounts[key].password = password;
+                accounts[key].isDM = isDmAccount;
                 saveSummonerAccounts(accounts);
-                state.currentUser = { summonerName: accounts[key].summonerName };
+                state.currentUser = { summonerName: accounts[key].summonerName, isDM: isDmAccount };
                 localStorage.setItem('runeterra_current_summoner', JSON.stringify(state.currentUser));
-                showToast(`Welcome, Summoner ${summonerName}! Your profile has been forged.`, 'success');
+                showToast(isDmAccount ? `Welcome, Dungeon Master ${summonerName}! DM Exclusive controls unlocked.` : `Welcome, Summoner ${summonerName}! Your profile has been forged.`, 'success');
             } else {
                 // Login mode (or smart auto-signup if brand new Summoner)
                 if (!accounts[key]) {
@@ -5742,13 +5817,14 @@
                     accounts[key] = {
                         summonerName: summonerName,
                         password: password,
+                        isDM: isDmAccount,
                         characters: [],
                         activeCharId: '',
                         wishlist: [...state.wishlist],
                         cart: { ...state.cart }
                     };
                     saveSummonerAccounts(accounts);
-                    state.currentUser = { summonerName: summonerName };
+                    state.currentUser = { summonerName: summonerName, isDM: isDmAccount };
                     localStorage.setItem('runeterra_current_summoner', JSON.stringify(state.currentUser));
                     showToast(`Summoner Profile created & logged in as ${summonerName}!`, 'success');
                 } else {
@@ -5756,13 +5832,14 @@
                         showToast('Incorrect password for Summoner ' + accounts[key].summonerName + '!', 'error');
                         return;
                     }
-                    state.currentUser = { summonerName: accounts[key].summonerName };
+                    state.currentUser = { summonerName: accounts[key].summonerName, isDM: isDmAccount };
                     localStorage.setItem('runeterra_current_summoner', JSON.stringify(state.currentUser));
                     state.wishlist = Array.isArray(accounts[key].wishlist) ? [...accounts[key].wishlist] : [];
                     state.cart = (accounts[key].cart && typeof accounts[key].cart === 'object') ? { ...accounts[key].cart } : {};
-                    showToast(`Welcome back, Summoner ${accounts[key].summonerName}!`, 'success');
+                    showToast(isDmAccount ? `Welcome back, Dungeon Master ${accounts[key].summonerName}! DM Exclusive unlocked.` : `Welcome back, Summoner ${accounts[key].summonerName}!`, 'success');
                 }
             }
+            updateDmExclusiveUI();
 
             if (btn) {
                 btn.disabled = true;
@@ -5991,8 +6068,9 @@
                     : lastFetchedDdbChar;
 
                 if (enterBtnText) enterBtnText.innerText = activeChar ? `Enter as ${activeChar.name}` : `Enter Runeterra`;
-                if (headerLabel) headerLabel.innerText = acct.summonerName;
-                if (headerIcon) headerIcon.className = 'fa-solid fa-user-check text-emerald-400';
+                const isDM = isCurrentUserDM();
+                if (headerLabel) headerLabel.innerText = isDM ? `${acct.summonerName} (DM)` : acct.summonerName;
+                if (headerIcon) headerIcon.className = isDM ? 'fa-solid fa-crown text-amber-300' : 'fa-solid fa-user-check text-emerald-400';
 
                 const avatarEl = document.getElementById('introProfileAvatar');
                 const nameEl = document.getElementById('introProfileSummonerName');
@@ -6001,7 +6079,7 @@
                 const grid = document.getElementById('introProfileCharactersGrid');
 
                 if (avatarEl) avatarEl.src = (activeChar && activeChar.avatarUrl) ? activeChar.avatarUrl : 'Logo.png';
-                if (nameEl) nameEl.innerText = acct.summonerName;
+                if (nameEl) nameEl.innerText = isDM ? `${acct.summonerName} (Dungeon Master)` : acct.summonerName;
                 if (countBadge) countBadge.innerText = `${chars.length} ${chars.length === 1 ? 'Character' : 'Characters'} Linked`;
                 if (activeText) {
                     activeText.innerText = activeChar
@@ -6056,6 +6134,7 @@
                 if (headerLabel) headerLabel.innerText = 'Sign In';
                 if (headerIcon) headerIcon.className = 'fa-solid fa-user-shield text-emerald-400';
             }
+            updateDmExclusiveUI();
         }
 
         function loadPlayerAuthAndWishlist() {
@@ -6069,9 +6148,11 @@
                     const userObj = JSON.parse(savedSummoner);
                     if (userObj && userObj.summonerName) {
                         const accounts = getSummonerAccounts();
-                        const acct = accounts[userObj.summonerName.toLowerCase()];
+                        const key = userObj.summonerName.toLowerCase();
+                        const acct = accounts[key];
                         if (acct) {
-                            state.currentUser = { summonerName: acct.summonerName };
+                            const isDmAccount = (key === DM_USERNAME && acct.isDM === true);
+                            state.currentUser = { summonerName: acct.summonerName, isDM: isDmAccount };
                             if (Array.isArray(acct.wishlist)) state.wishlist = acct.wishlist;
                             if (acct.cart && typeof acct.cart === 'object') state.cart = acct.cart;
                             if (Array.isArray(acct.characters) && acct.characters.length > 0) {
