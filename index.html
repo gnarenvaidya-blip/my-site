@@ -203,51 +203,51 @@
     <!-- ==========================================================================
          CINEMATIC LOADING / INTRODUCTION SCREEN (Mangoli Title + Backgound.jpeg)
          ========================================================================== -->
-    <div id="introScreen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 overflow-hidden select-none">
+    <div id="introScreen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 md:p-6 overflow-y-auto custom-scrollbar select-none">
         <!-- General Background Image with slow zoom -->
-        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat intro-bg-zoom" style="background-image: url('Backgound.jpeg');"></div>
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat intro-bg-zoom pointer-events-none" style="background-image: url('Backgound.jpeg');"></div>
         <!-- Rich Runic Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-stone-950/60 to-black/90"></div>
-        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 42%, rgba(212,175,55,0.16) 0%, rgba(10,6,15,0.85) 75%);"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-stone-950/60 to-black/90 pointer-events-none"></div>
+        <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 50% 42%, rgba(212,175,55,0.16) 0%, rgba(10,6,15,0.85) 75%);"></div>
 
         <!-- Decorative Corner Frame Borders -->
-        <div class="absolute inset-4 md:inset-8 border border-dndgold-500/30 rounded-2xl pointer-events-none flex flex-col justify-between p-4">
-            <div class="flex justify-between text-dndgold-400/50 text-xs">
+        <div class="absolute inset-3 md:inset-6 border border-dndgold-500/30 rounded-2xl pointer-events-none flex flex-col justify-between p-4">
+            <div class="flex justify-between text-dndgold-400/50 text-[10px] md:text-xs">
                 <span>✦ RUNETERRA 5.5E CAMPAIGN CODEX</span>
                 <span>2024 PLAYER'S HANDBOOK EDITION ✦</span>
             </div>
-            <div class="flex justify-between text-dndgold-400/50 text-xs">
+            <div class="flex justify-between text-dndgold-400/50 text-[10px] md:text-xs">
                 <span>✦ SPECIES • CLASSES • RULEBOOK • MARKETPLACE</span>
                 <span>WORLD RUNES AWAKENED ✦</span>
             </div>
         </div>
 
         <!-- Central Content -->
-        <div class="relative z-10 max-w-4xl w-full text-center flex flex-col items-center space-y-5">
+        <div class="relative z-10 max-w-4xl w-full text-center flex flex-col items-center space-y-3.5 my-auto py-4">
             <!-- Emblem Logo -->
             <div class="relative">
                 <div class="absolute -inset-6 rounded-full bg-dndgold-500/20 blur-2xl pointer-events-none"></div>
-                <img src="Logo.png" alt="Runeterra Enigma Emblem" class="h-24 md:h-32 w-auto object-contain mx-auto rune-logo-glow">
+                <img src="Logo.png" alt="Runeterra Enigma Emblem" class="h-20 md:h-28 w-auto object-contain mx-auto rune-logo-glow">
             </div>
 
             <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-stone-950/80 border border-dndgold-500/50 text-dndgold-300 text-[11px] md:text-xs font-bold uppercase tracking-[0.25em] shadow-lg">
+            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-stone-950/80 border border-dndgold-500/50 text-dndgold-300 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] shadow-lg">
                 <i class="fa-solid fa-dragon text-dndgold-400"></i>
                 <span>Official Campaign Companion &amp; Summoner Portal</span>
             </div>
 
             <!-- Main Title in Mangoli Font -->
-            <h1 class="font-mangoli text-3xl sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-dndgold-300 to-dndgold-500 drop-shadow-[0_5px_25px_rgba(0,0,0,0.95)] leading-tight px-2">
+            <h1 class="font-mangoli text-2xl sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-dndgold-300 to-dndgold-500 drop-shadow-[0_5px_25px_rgba(0,0,0,0.95)] leading-tight px-2">
                 D&amp;D Legend of Runeterra's Enigma
             </h1>
 
             <!-- Lore Subtitle -->
-            <p class="max-w-2xl text-xs sm:text-sm md:text-base text-amber-100/90 font-semibold leading-relaxed drop-shadow">
+            <p class="max-w-2xl text-xs sm:text-sm text-amber-100/90 font-semibold leading-relaxed drop-shadow">
                 Forge your champion across the twelve mortal realms of Runeterra, master the <span class="text-dndgold-300 font-bold">2024 D&amp;D 5.5e Core Rules</span>, and outfit your party at the <span class="text-dndgold-300 font-bold">Runeterra Grand Marketplace</span>.
             </p>
 
             <!-- Animated Runic Loading Bar -->
-            <div id="introLoadingBox" class="w-full max-w-md space-y-2 pt-1">
+            <div id="introLoadingBox" class="w-full max-w-md space-y-1.5">
                 <div class="flex justify-between text-[11px] font-mono font-bold text-dndgold-300">
                     <span id="introLoadStatus">Awakening World Runes &amp; Regional Lore...</span>
                     <span id="introLoadPercent">0%</span>
@@ -257,42 +257,166 @@
                 </div>
             </div>
 
-            <!-- Enter Portal Actions -->
-            <div id="introActionButtons" class="pt-3 flex flex-col items-center space-y-4 w-full max-w-xl">
-                <button onclick="enterRuneterraPortal('creation')" class="group relative px-9 py-3.5 bg-gradient-to-r from-dndgold-600 via-dndgold-400 to-amber-500 hover:from-dndgold-400 hover:to-amber-300 text-stone-950 font-mangoli text-base md:text-lg rounded-xl shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:shadow-[0_0_45px_rgba(240,211,118,0.85)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 border-2 border-amber-200 flex items-center gap-3">
-                    <i class="fa-solid fa-dungeon text-stone-950"></i>
-                    <span>Enter Runeterra</span>
-                    <i class="fa-solid fa-arrow-right text-stone-950 group-hover:translate-x-1 transition-transform"></i>
-                </button>
+            <!-- Enter Portal & Summoner Login / Profile Actions -->
+            <div id="introActionButtons" class="pt-1 flex flex-col items-center space-y-3.5 w-full max-w-2xl">
+                <!-- Primary Action Buttons Row: Enter Runeterra (Synchronized with Login/Signup) + Login/Signup Toggle -->
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <button onclick="handleIntroEnterRuneterra('creation')" class="group relative px-8 py-3 bg-gradient-to-r from-dndgold-600 via-dndgold-400 to-amber-500 hover:from-dndgold-400 hover:to-amber-300 text-stone-950 font-mangoli text-base md:text-lg rounded-xl shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:shadow-[0_0_45px_rgba(240,211,118,0.85)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 border-2 border-amber-200 flex items-center gap-3">
+                        <i class="fa-solid fa-dungeon text-stone-950"></i>
+                        <span id="introEnterRuneterraBtnText">Enter Runeterra</span>
+                        <i class="fa-solid fa-arrow-right text-stone-950 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
 
-                <!-- D&D Beyond Character Sheet Import Bar (Replaces Login/Signup on Intro Page) -->
-                <div class="w-full bg-stone-950/90 backdrop-blur-md p-3.5 rounded-2xl border-2 border-sky-500/60 shadow-[0_0_30px_rgba(14,165,233,0.25)] space-y-2">
-                    <div class="flex items-center justify-between text-[11px] font-bold px-1">
-                        <span class="text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="fa-solid fa-dragon text-sky-400"></i> Import D&amp;D Beyond Character Sheet
-                        </span>
-                        <span id="introDdbStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-500/40">Public Sheet URL / ID</span>
+                    <button id="introAuthSyncBtn" onclick="focusIntroAuthOrProfile()" class="px-5 py-3 bg-stone-950/90 hover:bg-stone-900 text-emerald-300 hover:text-emerald-200 font-mangoli text-sm md:text-base rounded-xl border-2 border-emerald-500/60 shadow-[0_0_25px_rgba(16,185,129,0.25)] transition-all flex items-center gap-2 active:scale-95">
+                        <i id="introAuthSyncBtnIcon" class="fa-solid fa-user-shield text-emerald-400"></i>
+                        <span id="introAuthSyncBtnText">Summoner Login / Sign Up</span>
+                    </button>
+                </div>
+
+                <!-- ======================================================================
+                     SUMMONER LOGIN / SIGN UP & INTRO PROFILE HUB (NO EMAIL REQUIRED)
+                     When logged out: Summoner Name + Password + D&D Beyond Character Link
+                     When logged in: Intro Page becomes Summoner's Profile with Saved Characters
+                     + "Add More Characters" D&D Beyond Sheet Link Type-In Bar!
+                     ====================================================================== -->
+                <div id="introSummonerHubCard" class="w-full bg-stone-950/92 backdrop-blur-md p-4 md:p-5 rounded-2xl border-2 border-dndgold-500/70 shadow-[0_0_35px_rgba(212,175,55,0.25)] text-left space-y-3.5">
+
+                    <!-- VIEW A: LOGGED OUT — SUMMONER LOGIN / SIGN UP FORM (NO EMAIL) -->
+                    <div id="introAuthFormView" class="space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-dndgold-500/30 pb-2.5">
+                            <div>
+                                <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold block">Summoner Portal Authentication</span>
+                                <h3 class="font-mangoli text-base md:text-lg text-amber-100 flex items-center gap-2">
+                                    <i class="fa-solid fa-scroll text-dndgold-400"></i>
+                                    <span id="introAuthHeadingText">Summoner Login / Sign Up</span>
+                                </h3>
+                            </div>
+                            <!-- Login / Sign Up Mode Switcher -->
+                            <div class="inline-flex bg-black/80 p-1 rounded-xl border border-dndgold-500/40 text-xs font-bold">
+                                <button type="button" id="introModeBtn-login" onclick="switchSummonerAuthMode('login')" class="px-3.5 py-1 rounded-lg bg-emerald-600 text-white shadow transition">
+                                    Log In
+                                </button>
+                                <button type="button" id="introModeBtn-signup" onclick="switchSummonerAuthMode('signup')" class="px-3.5 py-1 rounded-lg text-amber-200 hover:text-white transition">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                            <div>
+                                <label class="block text-dndgold-300 font-bold mb-1 uppercase tracking-wider text-[10px]">
+                                    <i class="fa-solid fa-user-astronaut mr-1 text-emerald-400"></i>Summoner's Name
+                                </label>
+                                <input id="introSummonerNameInput" type="text" onkeydown="if(event.key==='Enter') submitSummonerAuthAndEnter('creation')" placeholder="Enter your Summoner Name..." class="w-full bg-black/85 border border-dndgold-500/50 rounded-xl px-3.5 py-2.5 text-xs text-amber-100 font-bold placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
+                            </div>
+                            <div>
+                                <label class="block text-dndgold-300 font-bold mb-1 uppercase tracking-wider text-[10px]">
+                                    <i class="fa-solid fa-key mr-1 text-dndgold-400"></i>Password
+                                </label>
+                                <div class="relative">
+                                    <input id="introSummonerPassInput" type="password" onkeydown="if(event.key==='Enter') submitSummonerAuthAndEnter('creation')" placeholder="Enter your password..." class="w-full bg-black/85 border border-dndgold-500/50 rounded-xl px-3.5 py-2.5 pr-9 text-xs text-amber-100 font-mono placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
+                                    <button type="button" onclick="toggleIntroPassVisibility()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-amber-200 text-xs">
+                                        <i id="introPassEyeIcon" class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- D&D Beyond Character Sheet Link Type-In Bar -->
+                        <div>
+                            <div class="flex items-center justify-between text-[10px] font-bold mb-1">
+                                <span class="text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-dragon text-sky-400"></i> D&amp;D Beyond Character Sheet Link <span id="introDdbFieldHint" class="text-amber-300/80 font-normal normal-case">(Linked to your Summoner Profile)</span>
+                                </span>
+                                <span id="introDdbStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-500/40">Public Sheet URL / ID</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input id="introDdbUrlInput" type="text" onkeydown="if(event.key==='Enter') submitSummonerAuthAndEnter('creation')" placeholder="Paste D&D Beyond Character Sheet Link (e.g. https://www.dndbeyond.com/characters/12345678)" class="flex-grow bg-black/85 border border-sky-500/50 rounded-xl px-3.5 py-2.5 text-xs text-amber-100 font-mono placeholder-sky-200/40 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
+                                <button type="button" onclick="submitSummonerAuthAndEnter('creation')" id="introDdbImportBtn" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black rounded-xl shadow-lg text-xs flex items-center justify-center gap-2 whitespace-nowrap transition transform active:scale-95 border border-emerald-300/40">
+                                    <i class="fa-solid fa-right-to-bracket"></i>
+                                    <span id="introAuthSubmitBtnLabel">Log In &amp; Enter Runeterra</span>
+                                </button>
+                            </div>
+                            <p class="text-[10px] text-amber-200/70 mt-1">
+                                Tip: Clicking <strong>"Enter Runeterra"</strong> above automatically synchronizes with this Login / Sign Up form or imports your linked D&amp;D Beyond sheet!
+                            </p>
+                        </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input id="introDdbUrlInput" type="text" onkeydown="if(event.key==='Enter') importFromIntroAndEnter()" placeholder="Paste D&D Beyond Character URL or ID (e.g. https://www.dndbeyond.com/characters/12345678)" class="flex-grow bg-black/85 border border-sky-500/50 rounded-xl px-3.5 py-2.5 text-xs text-amber-100 font-mono placeholder-sky-200/40 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
-                        <button onclick="importFromIntroAndEnter()" id="introDdbImportBtn" class="px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black rounded-xl shadow-lg text-xs flex items-center justify-center gap-2 whitespace-nowrap transition transform active:scale-95 border border-sky-300/40">
-                            <i class="fa-solid fa-cloud-arrow-down"></i>
-                            <span>Import Sheet &amp; Enter</span>
-                        </button>
+
+                    <!-- VIEW B: LOGGED IN — SUMMONER INTRO PROFILE & MULTI-CHARACTER ROSTER -->
+                    <div id="introSummonerProfileView" class="hidden space-y-3.5">
+                        <!-- Summoner Profile Banner -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-dndgold-500/40 pb-3">
+                            <div class="flex items-center gap-3">
+                                <img id="introProfileAvatar" src="Logo.png" alt="Summoner Avatar" onerror="this.src='Logo.png'" class="w-14 h-14 rounded-2xl object-cover border-2 border-dndgold-400 shadow-lg bg-black">
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-[9px] font-mono uppercase tracking-widest font-bold">
+                                            <i class="fa-solid fa-circle-check mr-1"></i>Summoner Profile Active
+                                        </span>
+                                        <span id="introProfileCharCountBadge" class="px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-500/40 text-[9px] font-mono font-bold">
+                                            0 Linked Characters
+                                        </span>
+                                    </div>
+                                    <h3 id="introProfileSummonerName" class="font-mangoli text-lg md:text-xl text-amber-100 mt-0.5">
+                                        Summoner
+                                    </h3>
+                                    <p id="introProfileActiveCharText" class="text-[11px] text-dndgold-300 font-bold">
+                                        Active Sheet: None selected
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="enterRuneterraPortal('creation')" class="px-3.5 py-2 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-xl text-xs shadow flex items-center gap-1.5">
+                                    <i class="fa-solid fa-scroll"></i> View Sheet
+                                </button>
+                                <button type="button" onclick="logoutSummonerAccount()" class="px-3 py-2 bg-red-950/90 hover:bg-red-800 text-red-200 rounded-xl border border-red-500/40 text-xs font-bold flex items-center gap-1.5 transition" title="Switch Summoner or Log Out">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Saved Characters Roster for this Summoner -->
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span class="text-dndgold-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-users-viewfinder text-dndgold-400"></i> Your Linked D&amp;D Beyond Characters
+                                </span>
+                                <span class="text-[10px] text-stone-400 font-mono">Click any character to set active &amp; sync</span>
+                            </div>
+                            <div id="introProfileCharactersGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1 custom-scrollbar">
+                                <!-- Populated dynamically by renderIntroSummonerProfile() -->
+                            </div>
+                        </div>
+
+                        <!-- Add More Characters Bar (D&D Beyond Character Sheet Link Type-In Bar) -->
+                        <div class="p-3 rounded-xl bg-stone-900/95 border border-sky-500/50 space-y-1.5">
+                            <label class="text-[10px] font-bold text-sky-300 uppercase tracking-wider flex items-center justify-between">
+                                <span><i class="fa-solid fa-plus-circle text-emerald-400 mr-1"></i> Add More Characters — Paste D&amp;D Beyond Character Sheet Link</span>
+                                <span class="text-[9px] font-mono text-amber-300/80">Auto-saves to your Summoner Profile</span>
+                            </label>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input id="introProfileAddCharInput" type="text" onkeydown="if(event.key==='Enter') addCharacterToSummonerProfile()" placeholder="Paste another D&D Beyond Character URL or ID (e.g. https://www.dndbeyond.com/characters/12345678)" class="flex-grow bg-black/85 border border-sky-500/50 rounded-xl px-3 py-2 text-xs text-amber-100 font-mono placeholder-sky-200/40 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
+                                <button type="button" id="introProfileAddCharBtn" onclick="addCharacterToSummonerProfile()" class="px-4 py-2 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-black rounded-xl shadow text-xs flex items-center justify-center gap-1.5 whitespace-nowrap">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                    <span>+ Add Character Sheet</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Direct Destination Pills -->
-                <div class="flex flex-wrap items-center justify-center gap-2.5 text-xs font-bold">
-                    <button onclick="enterRuneterraPortal('creation')" class="px-4 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
+                <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-bold">
+                    <button onclick="handleIntroEnterRuneterra('creation')" class="px-3.5 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
                         <i class="fa-solid fa-helmet-safety text-dndgold-400"></i>
                         <span>1. Regional Character Creation</span>
                     </button>
-                    <button onclick="enterRuneterraPortal('rulebook')" class="px-4 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
+                    <button onclick="handleIntroEnterRuneterra('rulebook')" class="px-3.5 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
                         <i class="fa-solid fa-book-open text-sky-400"></i>
                         <span>2. 5.5e Rulebook Primer</span>
                     </button>
-                    <button onclick="enterRuneterraPortal('marketplace')" class="px-4 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
+                    <button onclick="handleIntroEnterRuneterra('marketplace')" class="px-3.5 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
                         <i class="fa-solid fa-coins text-emerald-400"></i>
                         <span>3. Lore Marketplace</span>
                     </button>
@@ -341,10 +465,10 @@
 
             <!-- Quick Action Nav Buttons -->
             <div class="flex items-center flex-wrap gap-2 text-xs font-bold order-2 xl:order-3">
-                <!-- Re-open Intro Button -->
-                <button onclick="reopenIntroScreen()" class="px-2.5 py-1.5 bg-stone-950/85 hover:bg-stone-800 text-dndgold-300 rounded-md border border-dndgold-500/40 transition-all duration-200 flex items-center gap-1.5" title="Return to Introduction Splash Screen">
-                    <i class="fa-solid fa-sparkles text-dndgold-400"></i>
-                    <span class="hidden md:inline">Intro</span>
+                <!-- Re-open Intro / Summoner Profile Button -->
+                <button onclick="reopenIntroScreen()" id="headerSummonerProfileBtn" class="px-2.5 py-1.5 bg-stone-950/90 hover:bg-stone-800 text-emerald-300 rounded-md border border-emerald-500/50 transition-all duration-200 flex items-center gap-1.5 shadow" title="Open Summoner Profile & Intro Screen">
+                    <i id="headerSummonerIcon" class="fa-solid fa-user-shield text-emerald-400"></i>
+                    <span id="headerSummonerLabel">Summoner Login</span>
                 </button>
 
                 <!-- D&D Beyond Sync Trigger -->
@@ -3215,6 +3339,10 @@
             lastFetchedDdbChar = parsed;
             localStorage.setItem('runeterra_last_ddb_char', JSON.stringify(parsed));
 
+            if (typeof registerFetchedCharWithCurrentSummoner === 'function') {
+                registerFetchedCharWithCurrentSummoner(parsed);
+            }
+
             renderFetchedDndBeyondCharacter(parsed);
             renderRuneterraFullCharacterSheet(parsed);
             applyDdbCharacterToMarketplace(true);
@@ -4507,6 +4635,9 @@
             if (intro) {
                 intro.classList.remove('intro-hidden');
             }
+            if (typeof renderIntroSummonerProfile === 'function') {
+                renderIntroSummonerProfile();
+            }
         }
 
         function switchMainTab(tabId) {
@@ -5446,17 +5577,482 @@
         }
 
         /* ==========================================================================
-           14. SUMMONER WISHLIST ENGINE
+           14. SUMMONER LOGIN / SIGN UP (NO EMAIL), INTRO PROFILE & WISHLIST ENGINE
            ========================================================================== */
+        let summonerAuthMode = 'login'; // 'login' | 'signup'
+
+        function getSummonerAccounts() {
+            try {
+                const raw = localStorage.getItem('runeterra_summoner_accounts');
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveSummonerAccounts(accounts) {
+            try {
+                localStorage.setItem('runeterra_summoner_accounts', JSON.stringify(accounts));
+            } catch (e) {}
+        }
+
+        function switchSummonerAuthMode(mode) {
+            summonerAuthMode = mode === 'signup' ? 'signup' : 'login';
+            const loginBtn = document.getElementById('introModeBtn-login');
+            const signupBtn = document.getElementById('introModeBtn-signup');
+            const heading = document.getElementById('introAuthHeadingText');
+            const submitLabel = document.getElementById('introAuthSubmitBtnLabel');
+            const syncBtnText = document.getElementById('introAuthSyncBtnText');
+            const enterBtnText = document.getElementById('introEnterRuneterraBtnText');
+            const ddbHint = document.getElementById('introDdbFieldHint');
+
+            if (summonerAuthMode === 'signup') {
+                if (signupBtn) signupBtn.className = 'px-3.5 py-1 rounded-lg bg-emerald-600 text-white shadow transition';
+                if (loginBtn) loginBtn.className = 'px-3.5 py-1 rounded-lg text-amber-200 hover:text-white transition';
+                if (heading) heading.innerText = 'Create Summoner Profile (Sign Up)';
+                if (submitLabel) submitLabel.innerText = 'Sign Up & Enter Runeterra';
+                if (!state.currentUser) {
+                    if (syncBtnText) syncBtnText.innerText = 'Summoner Sign Up Active';
+                    if (enterBtnText) enterBtnText.innerText = 'Sign Up & Enter Runeterra';
+                }
+                if (ddbHint) ddbHint.innerText = '(Required or add your first Character Sheet Link)';
+            } else {
+                if (loginBtn) loginBtn.className = 'px-3.5 py-1 rounded-lg bg-emerald-600 text-white shadow transition';
+                if (signupBtn) signupBtn.className = 'px-3.5 py-1 rounded-lg text-amber-200 hover:text-white transition';
+                if (heading) heading.innerText = 'Summoner Login / Sign Up';
+                if (submitLabel) submitLabel.innerText = 'Log In & Enter Runeterra';
+                if (!state.currentUser) {
+                    if (syncBtnText) syncBtnText.innerText = 'Summoner Login / Sign Up';
+                    if (enterBtnText) enterBtnText.innerText = 'Enter Runeterra';
+                }
+                if (ddbHint) ddbHint.innerText = '(Optional on Log In — auto-loads your saved sheets or adds a new one)';
+            }
+        }
+
+        function toggleIntroPassVisibility() {
+            const input = document.getElementById('introSummonerPassInput');
+            const icon = document.getElementById('introPassEyeIcon');
+            if (!input || !icon) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash text-emerald-400';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        function focusIntroAuthOrProfile() {
+            const intro = document.getElementById('introScreen');
+            if (intro && intro.classList.contains('intro-hidden')) {
+                reopenIntroScreen();
+            }
+            const hub = document.getElementById('introSummonerHubCard');
+            if (hub) {
+                hub.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            if (state.currentUser && state.currentUser.summonerName) {
+                const addIn = document.getElementById('introProfileAddCharInput');
+                if (addIn) addIn.focus();
+            } else {
+                const nameIn = document.getElementById('introSummonerNameInput');
+                if (nameIn) nameIn.focus();
+            }
+        }
+
+        /* Synchronizes the "Enter Runeterra" button & destination pills with the Login/Sign Up & D&D Beyond bar */
+        async function handleIntroEnterRuneterra(targetTab = 'creation') {
+            if (state.currentUser && state.currentUser.summonerName) {
+                // If the logged-in Summoner typed a new character URL in the "Add More Characters" bar before clicking Enter Runeterra, import it too!
+                const pendingAdd = (document.getElementById('introProfileAddCharInput')?.value || '').trim();
+                if (pendingAdd) {
+                    await addCharacterToSummonerProfile();
+                }
+                enterRuneterraPortal(targetTab);
+                return;
+            }
+
+            const nameVal = (document.getElementById('introSummonerNameInput')?.value || '').trim();
+            const passVal = document.getElementById('introSummonerPassInput')?.value || '';
+            const ddbVal = (document.getElementById('introDdbUrlInput')?.value || '').trim();
+
+            // If user typed their Summoner Name or Password, synchronize with Login/Sign Up automatically!
+            if (nameVal || passVal) {
+                await submitSummonerAuthAndEnter(targetTab);
+                return;
+            }
+
+            // If user only pasted a D&D Beyond link without logging in, import the sheet and enter
+            if (ddbVal) {
+                await saveDndBeyondLink(ddbVal);
+                enterRuneterraPortal(targetTab);
+                return;
+            }
+
+            // Otherwise enter directly
+            enterRuneterraPortal(targetTab);
+        }
+
+        async function submitSummonerAuthAndEnter(targetTab = 'creation') {
+            const nameInput = document.getElementById('introSummonerNameInput');
+            const passInput = document.getElementById('introSummonerPassInput');
+            const ddbInput = document.getElementById('introDdbUrlInput');
+            const btn = document.getElementById('introDdbImportBtn');
+
+            const summonerName = (nameInput?.value || '').trim();
+            const password = passInput?.value || '';
+            const ddbRaw = (ddbInput?.value || '').trim();
+
+            if (!summonerName || !password) {
+                showToast("Please enter both your Summoner's Name and Password!", 'error');
+                if (!summonerName && nameInput) nameInput.focus();
+                else if (passInput) passInput.focus();
+                return;
+            }
+
+            const accounts = getSummonerAccounts();
+            const key = summonerName.toLowerCase();
+
+            if (summonerAuthMode === 'signup') {
+                if (accounts[key] && accounts[key].password !== password) {
+                    showToast('That Summoner Name is already registered! Switch to Log In or use your password.', 'error');
+                    return;
+                }
+                accounts[key] = accounts[key] || {
+                    summonerName: summonerName,
+                    password: password,
+                    characters: [],
+                    activeCharId: '',
+                    wishlist: [...state.wishlist],
+                    cart: { ...state.cart }
+                };
+                accounts[key].summonerName = summonerName;
+                accounts[key].password = password;
+                saveSummonerAccounts(accounts);
+                state.currentUser = { summonerName: accounts[key].summonerName };
+                localStorage.setItem('runeterra_current_summoner', JSON.stringify(state.currentUser));
+                showToast(`Welcome, Summoner ${summonerName}! Your profile has been forged.`, 'success');
+            } else {
+                // Login mode (or smart auto-signup if brand new Summoner)
+                if (!accounts[key]) {
+                    // Automatically create the Summoner account so login/signup is seamless
+                    accounts[key] = {
+                        summonerName: summonerName,
+                        password: password,
+                        characters: [],
+                        activeCharId: '',
+                        wishlist: [...state.wishlist],
+                        cart: { ...state.cart }
+                    };
+                    saveSummonerAccounts(accounts);
+                    state.currentUser = { summonerName: summonerName };
+                    localStorage.setItem('runeterra_current_summoner', JSON.stringify(state.currentUser));
+                    showToast(`Summoner Profile created & logged in as ${summonerName}!`, 'success');
+                } else {
+                    if (accounts[key].password !== password) {
+                        showToast('Incorrect password for Summoner ' + accounts[key].summonerName + '!', 'error');
+                        return;
+                    }
+                    state.currentUser = { summonerName: accounts[key].summonerName };
+                    localStorage.setItem('runeterra_current_summoner', JSON.stringify(state.currentUser));
+                    if (Array.isArray(accounts[key].wishlist) && accounts[key].wishlist.length > 0) {
+                        state.wishlist = Array.from(new Set([...state.wishlist, ...accounts[key].wishlist]));
+                    }
+                    if (accounts[key].cart && Object.keys(accounts[key].cart).length > 0 && Object.keys(state.cart).length === 0) {
+                        state.cart = { ...accounts[key].cart };
+                    }
+                    showToast(`Welcome back, Summoner ${accounts[key].summonerName}!`, 'success');
+                }
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Syncing Summoner Sheet...</span>`;
+            }
+
+            // If user provided a D&D Beyond link during Login/Sign Up, fetch and add it to their profile
+            if (ddbRaw) {
+                await saveDndBeyondLink(ddbRaw);
+                if (ddbInput) ddbInput.value = '';
+            } else {
+                // Otherwise load their active or most recent saved character sheet
+                const acct = getSummonerAccounts()[key];
+                if (acct && Array.isArray(acct.characters) && acct.characters.length > 0) {
+                    const activeId = acct.activeCharId || acct.characters[0].id;
+                    const cachedChar = acct.characters.find(c => String(c.id) === String(activeId)) || acct.characters[0];
+                    if (cachedChar && cachedChar.fullData) {
+                        lastFetchedDdbChar = cachedChar.fullData;
+                        state.dndBeyondLinkedId = String(cachedChar.id);
+                        localStorage.setItem('runeterra_dndbeyond_link', String(cachedChar.id));
+                        localStorage.setItem('runeterra_last_ddb_char', JSON.stringify(cachedChar.fullData));
+                        updateDndBeyondUIStatus(String(cachedChar.id));
+                        renderFetchedDndBeyondCharacter(cachedChar.fullData);
+                        renderRuneterraFullCharacterSheet(cachedChar.fullData);
+                        applyDdbCharacterToMarketplace(true);
+                    } else if (activeId) {
+                        await saveDndBeyondLink(String(activeId));
+                    }
+                }
+            }
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span id="introAuthSubmitBtnLabel">Log In &amp; Enter Runeterra</span>`;
+            }
+
+            saveCurrentPlayerData();
+            recalculateTotals();
+            updateWishlistBadge();
+            renderWishlistDrawer();
+            renderIntroSummonerProfile();
+
+            enterRuneterraPortal(targetTab);
+            if (targetTab === 'creation') {
+                setTimeout(() => {
+                    const sheetEl = document.getElementById('firstPageCharacterSheetWrapper');
+                    if (sheetEl) sheetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 350);
+            }
+        }
+
+        function registerFetchedCharWithCurrentSummoner(parsedChar) {
+            if (!parsedChar || !parsedChar.id) return;
+            if (!state.currentUser || !state.currentUser.summonerName) {
+                renderIntroSummonerProfile();
+                return;
+            }
+            const accounts = getSummonerAccounts();
+            const key = state.currentUser.summonerName.toLowerCase();
+            if (!accounts[key]) return;
+
+            if (!Array.isArray(accounts[key].characters)) {
+                accounts[key].characters = [];
+            }
+
+            const summaryObj = {
+                id: String(parsedChar.id),
+                name: parsedChar.name || `Character #${parsedChar.id}`,
+                species: parsedChar.species || 'Runeterran',
+                classSummary: parsedChar.classSummary || 'Level 1',
+                primaryClass: parsedChar.primaryClass || 'Fighter',
+                totalLevel: parsedChar.totalLevel || 1,
+                totalGP: parsedChar.totalGP || 0,
+                avatarUrl: parsedChar.avatarUrl || 'Logo.png',
+                url: `https://www.dndbeyond.com/characters/${parsedChar.id}`,
+                fullData: parsedChar
+            };
+
+            const existingIdx = accounts[key].characters.findIndex(c => String(c.id) === String(parsedChar.id));
+            if (existingIdx >= 0) {
+                accounts[key].characters[existingIdx] = summaryObj;
+            } else {
+                accounts[key].characters.push(summaryObj);
+            }
+            accounts[key].activeCharId = String(parsedChar.id);
+            saveSummonerAccounts(accounts);
+            renderIntroSummonerProfile();
+        }
+
+        async function addCharacterToSummonerProfile() {
+            const input = document.getElementById('introProfileAddCharInput');
+            const btn = document.getElementById('introProfileAddCharBtn');
+            const rawVal = (input?.value || '').trim();
+            if (!rawVal) {
+                showToast('Paste a D&D Beyond Character Sheet Link or ID to add!', 'error');
+                if (input) input.focus();
+                return;
+            }
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Adding...</span>`;
+            }
+            await saveDndBeyondLink(rawVal);
+            if (input) input.value = '';
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-user-plus"></i> <span>+ Add Character Sheet</span>`;
+            }
+            renderIntroSummonerProfile();
+        }
+
+        async function selectSummonerProfileCharacter(charId, enterAfter = false) {
+            if (!charId) return;
+            if (state.currentUser && state.currentUser.summonerName) {
+                const accounts = getSummonerAccounts();
+                const key = state.currentUser.summonerName.toLowerCase();
+                const acct = accounts[key];
+                if (acct && Array.isArray(acct.characters)) {
+                    acct.activeCharId = String(charId);
+                    saveSummonerAccounts(accounts);
+                    const saved = acct.characters.find(c => String(c.id) === String(charId));
+                    if (saved && saved.fullData) {
+                        lastFetchedDdbChar = saved.fullData;
+                        state.dndBeyondLinkedId = String(charId);
+                        localStorage.setItem('runeterra_dndbeyond_link', String(charId));
+                        localStorage.setItem('runeterra_last_ddb_char', JSON.stringify(saved.fullData));
+                        updateDndBeyondUIStatus(String(charId));
+                        renderFetchedDndBeyondCharacter(saved.fullData);
+                        renderRuneterraFullCharacterSheet(saved.fullData);
+                        applyDdbCharacterToMarketplace(false);
+                        renderIntroSummonerProfile();
+                        if (enterAfter) enterRuneterraPortal('creation');
+                        return;
+                    }
+                }
+            }
+            await saveDndBeyondLink(String(charId));
+            renderIntroSummonerProfile();
+            if (enterAfter) enterRuneterraPortal('creation');
+        }
+
+        function removeSummonerProfileCharacter(charId) {
+            if (!state.currentUser || !state.currentUser.summonerName) return;
+            const accounts = getSummonerAccounts();
+            const key = state.currentUser.summonerName.toLowerCase();
+            const acct = accounts[key];
+            if (!acct || !Array.isArray(acct.characters)) return;
+
+            acct.characters = acct.characters.filter(c => String(c.id) !== String(charId));
+            if (String(acct.activeCharId) === String(charId)) {
+                acct.activeCharId = acct.characters[0] ? String(acct.characters[0].id) : '';
+            }
+            saveSummonerAccounts(accounts);
+            if (acct.activeCharId) {
+                selectSummonerProfileCharacter(acct.activeCharId, false);
+            }
+            renderIntroSummonerProfile();
+            showToast('Removed character sheet from your Summoner Profile.', 'info');
+        }
+
+        function logoutSummonerAccount() {
+            saveCurrentPlayerData();
+            state.currentUser = null;
+            localStorage.removeItem('runeterra_current_summoner');
+            renderIntroSummonerProfile();
+            showToast('Logged out of Summoner Profile.', 'info');
+        }
+
+        function renderIntroSummonerProfile() {
+            const authView = document.getElementById('introAuthFormView');
+            const profileView = document.getElementById('introSummonerProfileView');
+            const syncBtnText = document.getElementById('introAuthSyncBtnText');
+            const syncBtnIcon = document.getElementById('introAuthSyncBtnIcon');
+            const enterBtnText = document.getElementById('introEnterRuneterraBtnText');
+            const headerLabel = document.getElementById('headerSummonerLabel');
+            const headerIcon = document.getElementById('headerSummonerIcon');
+
+            if (state.currentUser && state.currentUser.summonerName) {
+                if (authView) authView.classList.add('hidden');
+                if (profileView) profileView.classList.remove('hidden');
+
+                const accounts = getSummonerAccounts();
+                const key = state.currentUser.summonerName.toLowerCase();
+                const acct = accounts[key] || { summonerName: state.currentUser.summonerName, characters: [] };
+                const chars = Array.isArray(acct.characters) ? acct.characters : [];
+                const activeChar = chars.find(c => String(c.id) === String(acct.activeCharId)) || chars[0] || lastFetchedDdbChar;
+
+                if (syncBtnText) syncBtnText.innerText = `${acct.summonerName}'s Profile (${chars.length})`;
+                if (syncBtnIcon) syncBtnIcon.className = 'fa-solid fa-user-check text-emerald-300';
+                if (enterBtnText) enterBtnText.innerText = activeChar ? `Enter as ${activeChar.name}` : `Enter Runeterra`;
+                if (headerLabel) headerLabel.innerText = acct.summonerName;
+                if (headerIcon) headerIcon.className = 'fa-solid fa-user-check text-emerald-400';
+
+                const avatarEl = document.getElementById('introProfileAvatar');
+                const nameEl = document.getElementById('introProfileSummonerName');
+                const countBadge = document.getElementById('introProfileCharCountBadge');
+                const activeText = document.getElementById('introProfileActiveCharText');
+                const grid = document.getElementById('introProfileCharactersGrid');
+
+                if (avatarEl) avatarEl.src = (activeChar && activeChar.avatarUrl) ? activeChar.avatarUrl : 'Logo.png';
+                if (nameEl) nameEl.innerText = acct.summonerName;
+                if (countBadge) countBadge.innerText = `${chars.length} ${chars.length === 1 ? 'Character' : 'Characters'} Linked`;
+                if (activeText) {
+                    activeText.innerText = activeChar
+                        ? `Active Sheet: ${activeChar.name} (${activeChar.species} • ${activeChar.classSummary} • ${(activeChar.totalGP || 0).toLocaleString()} GP)`
+                        : 'No D&D Beyond character linked yet — paste a sheet link below!';
+                }
+
+                if (grid) {
+                    grid.innerHTML = '';
+                    if (chars.length === 0) {
+                        grid.innerHTML = `
+                            <div class="sm:col-span-2 p-3 rounded-xl bg-stone-900/80 border border-stone-800 text-center text-xs text-stone-400 italic">
+                                No character sheets linked yet. Paste your D&amp;D Beyond character link in the bar below to add your first champion!
+                            </div>
+                        `;
+                    } else {
+                        chars.forEach(ch => {
+                            const isActive = activeChar && String(activeChar.id) === String(ch.id);
+                            const card = document.createElement('div');
+                            card.className = `p-2.5 rounded-xl border transition flex items-center justify-between gap-2 ${isActive ? 'bg-gradient-to-r from-emerald-950/90 to-stone-900 border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.25)]' : 'bg-stone-900/90 border-stone-700 hover:border-dndgold-400'}`;
+                            card.innerHTML = `
+                                <div onclick="selectSummonerProfileCharacter('${ch.id}', false)" class="flex items-center gap-2.5 min-w-0 cursor-pointer flex-grow">
+                                    <img src="${ch.avatarUrl || 'Logo.png'}" alt="${ch.name}" onerror="this.src='Logo.png'" class="w-10 h-10 rounded-lg object-cover border ${isActive ? 'border-emerald-400' : 'border-dndgold-500/50'} bg-black flex-shrink-0">
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-1.5">
+                                            <strong class="text-xs text-amber-100 font-bold truncate">${ch.name}</strong>
+                                            ${isActive ? `<span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-600 text-white font-mono font-bold">ACTIVE</span>` : ''}
+                                        </div>
+                                        <span class="text-[10px] text-sky-300 block truncate">${ch.species} • ${ch.classSummary}</span>
+                                        <span class="text-[10px] text-dndgold-300 font-mono block"><i class="fa-solid fa-coins mr-1"></i>${(ch.totalGP || 0).toLocaleString()} GP</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1 flex-shrink-0">
+                                    <button type="button" onclick="selectSummonerProfileCharacter('${ch.id}', true)" title="Load & Enter Runeterra" class="px-2.5 py-1.5 bg-dndgold-500 hover:bg-dndgold-400 text-stone-950 font-black rounded-lg text-[10px] shadow">
+                                        Play
+                                    </button>
+                                    <button type="button" onclick="removeSummonerProfileCharacter('${ch.id}')" title="Remove Character" class="w-6 h-6 bg-red-950/80 hover:bg-red-800 text-red-300 rounded-lg text-[10px] flex items-center justify-center">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            `;
+                            grid.appendChild(card);
+                        });
+                    }
+                }
+            } else {
+                if (authView) authView.classList.remove('hidden');
+                if (profileView) profileView.classList.add('hidden');
+                if (syncBtnText) syncBtnText.innerText = 'Summoner Login / Sign Up';
+                if (syncBtnIcon) syncBtnIcon.className = 'fa-solid fa-user-shield text-emerald-400';
+                if (enterBtnText) enterBtnText.innerText = 'Enter Runeterra';
+                if (headerLabel) headerLabel.innerText = 'Summoner Login';
+                if (headerIcon) headerIcon.className = 'fa-solid fa-user-shield text-emerald-400';
+            }
+        }
+
         function loadPlayerAuthAndWishlist() {
             try {
                 const savedWishlist = localStorage.getItem('runeterra_guest_wishlist');
                 if (savedWishlist) {
                     state.wishlist = JSON.parse(savedWishlist) || [];
                 }
+                const savedSummoner = localStorage.getItem('runeterra_current_summoner');
+                if (savedSummoner) {
+                    const userObj = JSON.parse(savedSummoner);
+                    if (userObj && userObj.summonerName) {
+                        const accounts = getSummonerAccounts();
+                        const acct = accounts[userObj.summonerName.toLowerCase()];
+                        if (acct) {
+                            state.currentUser = { summonerName: acct.summonerName };
+                            if (Array.isArray(acct.wishlist)) state.wishlist = acct.wishlist;
+                            if (acct.cart && typeof acct.cart === 'object') state.cart = acct.cart;
+                            if (Array.isArray(acct.characters) && acct.characters.length > 0) {
+                                const activeChar = acct.characters.find(c => String(c.id) === String(acct.activeCharId)) || acct.characters[0];
+                                if (activeChar && activeChar.fullData) {
+                                    lastFetchedDdbChar = activeChar.fullData;
+                                    state.dndBeyondLinkedId = String(activeChar.id);
+                                    localStorage.setItem('runeterra_dndbeyond_link', String(activeChar.id));
+                                    localStorage.setItem('runeterra_last_ddb_char', JSON.stringify(activeChar.fullData));
+                                }
+                            }
+                        }
+                    }
+                }
             } catch (e) {
-                console.error('Wishlist load error:', e);
+                console.error('Summoner Auth/Wishlist load error:', e);
             }
+            renderIntroSummonerProfile();
             updateWishlistBadge();
             renderWishlistDrawer();
         }
@@ -5464,6 +6060,15 @@
         function saveCurrentPlayerData() {
             try {
                 localStorage.setItem('runeterra_guest_wishlist', JSON.stringify(state.wishlist));
+                if (state.currentUser && state.currentUser.summonerName) {
+                    const accounts = getSummonerAccounts();
+                    const key = state.currentUser.summonerName.toLowerCase();
+                    if (accounts[key]) {
+                        accounts[key].wishlist = [...state.wishlist];
+                        accounts[key].cart = { ...state.cart };
+                        saveSummonerAccounts(accounts);
+                    }
+                }
             } catch (e) {}
         }
 
