@@ -287,8 +287,8 @@
                             </div>
                         </div>
 
-                        <!-- D&D Beyond Character Sheet Link Type-In Bar (Only shown on Sign Up) -->
-                        <div id="introSignupDdbBox" class="hidden">
+                        <!-- D&D Beyond Character Sheet Link Type-In Bar -->
+                        <div id="introSignupDdbBox">
                             <label class="block text-sky-300 font-bold mb-1 uppercase tracking-wider text-[10px]">
                                 <i class="fa-solid fa-dragon text-sky-400 mr-1"></i>D&amp;D Beyond Character Sheet Link
                             </label>
@@ -480,7 +480,7 @@
                     <button onclick="importFromFirstPageBar()" id="firstPageDdbBtn" class="px-4 py-2.5 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-xl shadow-lg text-xs flex items-center justify-center gap-1.5 whitespace-nowrap">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Load Sheet
                     </button>
-                    <button onclick="unsyncCharacterSheet()" id="firstPageUnsyncBtn" class="hidden px-3.5 py-2.5 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white font-bold rounded-xl border border-red-500/50 shadow text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition" title="Unsync Character Sheet & View Website Fresh">
+                    <button onclick="unsyncCharacterSheet()" id="firstPageUnsyncBtn" class="hidden px-3.5 py-2.5 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white font-bold rounded-xl border border-red-500/50 shadow text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition" title="Unsync Character Sheet">
                         <i class="fa-solid fa-link-slash text-red-400"></i> Unsync
                     </button>
                 </div>
@@ -1149,15 +1149,15 @@
                     <span id="regionBadge" class="text-[10px] font-bold px-2 py-0.5 rounded bg-dndgold-500/20 text-dndgold-300 border border-dndgold-500/40">Demacia</span>
                 </div>
 
-                <!-- Linked D&D Beyond Summoner Market Block (Avatar + Market-Only Stats) -->
-                <div id="marketplaceSummonerBlock" class="mb-4 p-3.5 rounded-xl bg-stone-950/90 border-2 border-sky-500/50 space-y-3 shadow-inner">
+                <!-- Linked D&D Beyond Summoner Market Block (Shown when a character sheet is synced) -->
+                <div id="marketplaceSummonerBlock" class="hidden mb-4 p-3.5 rounded-xl bg-stone-950/90 border-2 border-sky-500/50 space-y-3 shadow-inner">
                     <div id="marketplaceSummonerContent" class="space-y-2.5">
                         <div class="flex items-center gap-3">
                             <img id="marketSummonerAvatar" src="Logo.png" alt="Summoner Avatar" class="w-14 h-14 rounded-xl object-cover border-2 border-dndgold-400 shadow-lg bg-black/60">
                             <div class="min-w-0 flex-grow">
-                                <span id="marketSummonerSyncTag" class="text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/40 font-bold inline-block mb-0.5">Manual Mode (No Sheet Linked)</span>
-                                <h3 id="marketSummonerName" class="font-mangoli text-base text-amber-100 truncate">Unlinked Summoner</h3>
-                                <p id="marketSummonerSub" class="text-[11px] text-sky-300 font-bold truncate">Import D&amp;D Beyond Sheet to auto-fill</p>
+                                <span id="marketSummonerSyncTag" class="text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/50 font-bold inline-block mb-0.5">Character Sheet Synced</span>
+                                <h3 id="marketSummonerName" class="font-mangoli text-base text-amber-100 truncate">Summoner</h3>
+                                <p id="marketSummonerSub" class="text-[11px] text-sky-300 font-bold truncate">Runeterra Champion</p>
                             </div>
                         </div>
                         <!-- Market-Required Stats Grid -->
@@ -1180,14 +1180,14 @@
                             </div>
                         </div>
                         <div id="marketSummonerProfBox" class="text-[10px] text-amber-200/80 bg-black/60 px-2.5 py-1.5 rounded border border-stone-800">
-                            <strong class="text-dndgold-300">Market Proficiencies:</strong> <span id="marketSummonerProfText">All Armor, Shields, Simple &amp; Martial Weapons</span>
+                            <strong class="text-dndgold-300">Proficiencies:</strong> <span id="marketSummonerProfText">All Armor, Shields, Simple &amp; Martial Weapons</span>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                             <button onclick="toggleDndBeyondModal()" class="w-full py-1.5 px-3 bg-sky-900/80 hover:bg-sky-700 text-sky-100 rounded-lg border border-sky-400/50 text-[11px] font-bold flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-cloud-arrow-down text-sky-300"></i> Sync / Switch Sheet
+                                <i class="fa-solid fa-cloud-arrow-down text-sky-300"></i> Switch Sheet
                             </button>
                             <button onclick="unsyncCharacterSheet()" id="marketUnsyncBtn" class="w-full py-1.5 px-3 bg-red-950/80 hover:bg-red-800 text-red-200 rounded-lg border border-red-500/40 text-[11px] font-bold flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-link-slash text-red-400"></i> Unsync / View Fresh
+                                <i class="fa-solid fa-link-slash text-red-400"></i> Unsync Sheet
                             </button>
                         </div>
                     </div>
@@ -1611,9 +1611,6 @@
                     <button onclick="exportCharacterSheet()" class="px-4 py-2 bg-stone-800 hover:bg-stone-700 text-amber-200 rounded-lg border border-stone-600 text-xs font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-copy"></i> Copy Receipt &amp; Balance
                     </button>
-                    <button onclick="copyDndBeyondScript()" class="px-4 py-2 bg-sky-900/90 hover:bg-sky-700 text-sky-100 rounded-lg border border-sky-400/50 text-xs font-bold flex items-center gap-1.5">
-                        <i class="fa-solid fa-terminal"></i> Copy D&amp;D Beyond Console Script
-                    </button>
                 </div>
                 <div class="flex items-center gap-2">
                     <a id="checkoutOpenCharSheetBtn" href="https://www.dndbeyond.com/campaigns/8189529" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-black shadow flex items-center gap-1.5">
@@ -1669,8 +1666,8 @@
                         <label class="font-bold text-sky-300 uppercase tracking-wider block">Fetch Live Character Sheet &amp; Campaign Roster</label>
                         <div class="flex items-center gap-2">
                             <span id="linkedCharacterBadge" class="text-[10px] px-2 py-0.5 rounded bg-sky-900 text-sky-200 border border-sky-400/50">Not Connected</span>
-                            <button onclick="unsyncCharacterSheet()" id="modalUnsyncBtn" class="hidden px-2.5 py-1 bg-red-950/90 hover:bg-red-800 text-red-200 rounded border border-red-500/50 text-[10px] font-bold flex items-center gap-1 transition" title="Unsync Character Sheet & View Website Fresh">
-                                <i class="fa-solid fa-link-slash text-red-400"></i> Unsync / View Fresh
+                            <button onclick="unsyncCharacterSheet()" id="modalUnsyncBtn" class="hidden px-2.5 py-1 bg-red-950/90 hover:bg-red-800 text-red-200 rounded border border-red-500/50 text-[10px] font-bold flex items-center gap-1 transition" title="Unsync Character Sheet">
+                                <i class="fa-solid fa-link-slash text-red-400"></i> Unsync
                             </button>
                         </div>
                     </div>
@@ -1713,7 +1710,7 @@
 
             <div class="mt-5 pt-3 border-t border-sky-500/30 flex items-center justify-between gap-2">
                 <button onclick="unsyncCharacterSheet()" class="px-4 py-2 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white border border-red-500/50 text-xs font-bold rounded-lg shadow flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-rotate-left text-red-400"></i> Unsync Sheet &amp; View Fresh Website
+                    <i class="fa-solid fa-link-slash text-red-400"></i> Unsync Sheet
                 </button>
                 <button onclick="toggleDndBeyondModal()" class="px-5 py-2 bg-sky-800 hover:bg-sky-700 text-white text-xs font-bold rounded-lg shadow">
                     Done
@@ -3749,7 +3746,7 @@
                             <button onclick="fetchDndBeyondCharacterSheet('${c.id}')" class="px-3.5 py-2.5 bg-stone-900 hover:bg-stone-800 text-sky-300 rounded-xl border border-sky-500/40 text-xs font-bold flex items-center gap-1.5 transition" title="Refresh live data from D&D Beyond">
                                 <i class="fa-solid fa-arrows-rotate"></i> Sync
                             </button>
-                            <button onclick="unsyncCharacterSheet()" class="px-3.5 py-2.5 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white rounded-xl border border-red-500/50 text-xs font-bold flex items-center gap-1.5 transition" title="Unsync Character Sheet & View Website Fresh">
+                            <button onclick="unsyncCharacterSheet()" class="px-3.5 py-2.5 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white rounded-xl border border-red-500/50 text-xs font-bold flex items-center gap-1.5 transition" title="Unsync Character Sheet">
                                 <i class="fa-solid fa-link-slash text-red-400"></i> Unsync
                             </button>
                             <a href="https://www.dndbeyond.com/characters/${c.id}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2.5 bg-sky-950/90 hover:bg-sky-800 text-sky-200 rounded-xl border border-sky-500/50 text-xs font-bold flex items-center gap-1.5 transition">
@@ -3982,7 +3979,13 @@
         }
 
         function renderMarketplaceSummonerBlock(c) {
-            if (!c) return;
+            const blockEl = document.getElementById('marketplaceSummonerBlock');
+            if (!c) {
+                if (blockEl) blockEl.classList.add('hidden');
+                return;
+            }
+            if (blockEl) blockEl.classList.remove('hidden');
+
             const avatarEl = document.getElementById('marketSummonerAvatar');
             const tagEl = document.getElementById('marketSummonerSyncTag');
             const nameEl = document.getElementById('marketSummonerName');
@@ -4015,22 +4018,16 @@
         }
 
         function updateMarketplaceSummonerManualFallback() {
+            const blockEl = document.getElementById('marketplaceSummonerBlock');
             if (lastFetchedDdbChar) {
+                if (blockEl) blockEl.classList.remove('hidden');
                 const strEl = document.getElementById('marketSummonerStr');
                 const gpEl = document.getElementById('marketSummonerGp');
                 if (strEl) strEl.innerText = `${state.strScore} (${state.strScore * 15} lb)`;
                 if (gpEl) gpEl.innerText = `${state.baseGold.toLocaleString()} GP`;
                 return;
             }
-            const nameEl = document.getElementById('marketSummonerName');
-            const subEl = document.getElementById('marketSummonerSub');
-            const strEl = document.getElementById('marketSummonerStr');
-            const gpEl = document.getElementById('marketSummonerGp');
-            const details = CLASS_DETAILS[state.characterClass] || CLASS_DETAILS['Custom'];
-            if (nameEl) nameEl.innerText = `Summoner (${state.characterClass})`;
-            if (subEl) subEl.innerText = `Level ${state.level} • ${details.region}`;
-            if (strEl) strEl.innerText = `${state.strScore} (${state.strScore * 15} lb)`;
-            if (gpEl) gpEl.innerText = `${state.baseGold.toLocaleString()} GP`;
+            if (blockEl) blockEl.classList.add('hidden');
         }
 
         /* ==========================================================================
@@ -4341,7 +4338,7 @@
             }
         }
 
-        function unsyncCharacterSheet() {
+        function unsyncCharacterSheet(silent) {
             lastFetchedDdbChar = null;
             state.dndBeyondLinkedId = null;
             localStorage.removeItem('runeterra_dndbeyond_link');
@@ -4383,20 +4380,8 @@
             const headerBtn = document.getElementById('headerDdbBtnLabel');
             if (headerBtn) headerBtn.innerText = 'D&D Beyond Sheet';
 
-            const avatarEl = document.getElementById('marketSummonerAvatar');
-            const tagEl = document.getElementById('marketSummonerSyncTag');
-            const acEl = document.getElementById('marketSummonerAc');
-            const dexEl = document.getElementById('marketSummonerDex');
-            const profEl = document.getElementById('marketSummonerProfText');
-
-            if (avatarEl) avatarEl.src = 'Logo.png';
-            if (tagEl) {
-                tagEl.innerText = 'Manual Mode (No Sheet Linked)';
-                tagEl.className = 'text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/40 font-bold inline-block mb-0.5';
-            }
-            if (acEl) acEl.innerText = '16 AC';
-            if (dexEl) dexEl.innerText = '+0';
-            if (profEl) profEl.innerText = 'All Armor, Shields, Simple & Martial Weapons';
+            const blockEl = document.getElementById('marketplaceSummonerBlock');
+            if (blockEl) blockEl.classList.add('hidden');
 
             const clsSel = document.getElementById('charClassSelect');
             if (clsSel) clsSel.value = 'Paladin';
@@ -4411,7 +4396,9 @@
             renderMarketplace();
             renderIntroSummonerProfile();
 
-            showToast('Character sheet unsynced! Viewing website fresh.', 'info');
+            if (!silent) {
+                showToast('Character sheet disconnected.', 'info');
+            }
         }
 
         function copyDndBeyondScript() {
@@ -5645,7 +5632,7 @@
                 if (signupBtn) signupBtn.className = 'px-3.5 py-1 rounded-lg text-amber-200 hover:text-white transition';
                 if (heading) heading.innerText = 'Summoner Sign In / Sign Up';
                 if (submitLabel) submitLabel.innerText = 'Sign In & Enter Runeterra';
-                if (signupDdbBox) signupDdbBox.classList.add('hidden');
+                if (signupDdbBox) signupDdbBox.classList.remove('hidden');
                 if (!state.currentUser) {
                     if (enterBtnText) enterBtnText.innerText = 'Enter Runeterra';
                 }
@@ -5761,12 +5748,12 @@
                 btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Syncing Summoner Sheet...</span>`;
             }
 
-            // If user provided a D&D Beyond link during Sign Up, fetch and add it to their profile
-            if (summonerAuthMode === 'signup' && ddbRaw) {
+            // If user provided a D&D Beyond link during Sign In or Sign Up, fetch and add it to their profile
+            if (ddbRaw) {
                 await saveDndBeyondLink(ddbRaw);
                 if (ddbInput) ddbInput.value = '';
             } else {
-                // On Sign In (or Sign Up without link), load their active or most recent saved character sheet
+                // Load their active or most recent saved character sheet
                 const acct = getSummonerAccounts()[key];
                 if (acct && Array.isArray(acct.characters) && acct.characters.length > 0) {
                     const activeId = acct.activeCharId || acct.characters[0].id;
@@ -5785,6 +5772,17 @@
                         }
                     } else if (activeId) {
                         await saveDndBeyondLink(String(activeId));
+                    }
+                } else if (state.dndBeyondLinkedId || lastFetchedDdbChar) {
+                    // Register currently fetched sheet onto their account and sync
+                    if (lastFetchedDdbChar) {
+                        registerFetchedCharWithCurrentSummoner(lastFetchedDdbChar);
+                        updateDndBeyondUIStatus(String(lastFetchedDdbChar.id));
+                        renderFetchedDndBeyondCharacter(lastFetchedDdbChar);
+                        renderRuneterraFullCharacterSheet(lastFetchedDdbChar);
+                        applyDdbCharacterToMarketplace(true);
+                    } else if (state.dndBeyondLinkedId) {
+                        await saveDndBeyondLink(String(state.dndBeyondLinkedId));
                     }
                 }
             }
@@ -5928,7 +5926,22 @@
             saveCurrentPlayerData();
             state.currentUser = null;
             localStorage.removeItem('runeterra_current_summoner');
-            unsyncCharacterSheet();
+
+            // Reset cart, wishlist, and inputs for a completely fresh session
+            state.cart = {};
+            state.wishlist = [];
+            localStorage.removeItem('runeterra_guest_wishlist');
+
+            const nameIn = document.getElementById('introSummonerNameInput');
+            const passIn = document.getElementById('introSummonerPassInput');
+            const ddbIn = document.getElementById('introDdbUrlInput');
+            if (nameIn) nameIn.value = '';
+            if (passIn) passIn.value = '';
+            if (ddbIn) ddbIn.value = '';
+
+            unsyncCharacterSheet(true);
+            updateWishlistBadge();
+            renderWishlistDrawer();
             renderIntroSummonerProfile();
             showToast('Signed out of Summoner Profile.', 'info');
         }
