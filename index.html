@@ -3204,19 +3204,40 @@
 
             const targetUrl = `https://character-service.dndbeyond.com/character/v5/character/${charId}`;
             const endpoints = [
+                `https://r.jina.ai/${targetUrl}`,
                 targetUrl,
-                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-                `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
+                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
             ];
 
             let charData = null;
             for (const url of endpoints) {
                 try {
-                    const res = await fetch(url);
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 9000);
+                    const res = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timeoutId);
                     if (!res.ok) continue;
-                    const json = await res.json();
-                    if (json && json.data && json.data.name) {
-                        charData = json.data;
+                    const rawText = await res.text();
+                    if (!rawText) continue;
+
+                    // Extract JSON payload even if wrapped by a reader/proxy header
+                    let jsonStr = rawText.trim();
+                    const jsonStartIdx = jsonStr.indexOf('{"id":');
+                    const fallbackIdx = jsonStr.indexOf('{');
+                    const startPos = jsonStartIdx >= 0 ? jsonStartIdx : fallbackIdx;
+                    const endPos = jsonStr.lastIndexOf('}');
+                    if (startPos >= 0 && endPos > startPos) {
+                        jsonStr = jsonStr.substring(startPos, endPos + 1);
+                    }
+
+                    const json = JSON.parse(jsonStr);
+                    const candidate = (json && json.data && json.data.name)
+                        ? json.data
+                        : (json && json.contents ? JSON.parse(json.contents)?.data : null);
+                    if (candidate && candidate.name) {
+                        charData = candidate;
                         break;
                     }
                 } catch (err) {
