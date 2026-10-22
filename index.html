@@ -1624,8 +1624,11 @@
                     <a id="checkoutOpenCharSheetBtn" href="https://www.dndbeyond.com/campaigns/8189529" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-black shadow flex items-center gap-1.5">
                         <i class="fa-solid fa-dragon"></i> Open My D&amp;D Beyond Sheet
                     </a>
-                    <button onclick="closeFinalCheckoutModal()" class="px-5 py-2 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-lg text-xs shadow">
-                        Done
+                    <button onclick="confirmAndApplyPurchaseToSheet()" class="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-stone-950 font-black rounded-lg text-xs shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-check-double"></i> Confirm Purchase to Sheet
+                    </button>
+                    <button onclick="closeFinalCheckoutModal()" class="px-4 py-2 bg-stone-800 hover:bg-stone-700 text-amber-200 font-bold rounded-lg text-xs border border-stone-600">
+                        Close
                     </button>
                 </div>
             </div>
@@ -3284,6 +3287,30 @@
             }
 
             const parsed = parseDndBeyondCharacterData(charData);
+
+            // Preserve any previously finalized Marketplace purchases for this character
+            const ledger = getCharacterPurchaseLedger(String(parsed.id));
+            if (ledger && (ledger.spentGP > 0 || (Array.isArray(ledger.items) && ledger.items.length > 0))) {
+                parsed.baseTotalGP = parseFloat(Math.max(0, parsed.baseTotalGP - (ledger.spentGP || 0)).toFixed(2));
+                parsed.totalGP = parsed.baseTotalGP;
+                (ledger.items || []).forEach(pItem => {
+                    const exIdx = parsed.baseInventory.findIndex(inv => inv.name.toLowerCase() === pItem.name.toLowerCase());
+                    if (exIdx >= 0) {
+                        parsed.baseInventory[exIdx].qty = (parsed.baseInventory[exIdx].qty || 1) + (pItem.qty || 1);
+                        parsed.baseInventory[exIdx].isMarketplacePurchase = true;
+                    } else {
+                        parsed.baseInventory.unshift({ ...pItem, isMarketplacePurchase: true });
+                    }
+                    if (pItem.weaponEntry && !parsed.baseWeaponsList.some(w => w.name.toLowerCase() === pItem.weaponEntry.name.toLowerCase())) {
+                        parsed.baseWeaponsList.unshift({ ...pItem.weaponEntry, isMarketplacePurchase: true });
+                    }
+                });
+                parsed.fullInventory = parsed.baseInventory.map(i => ({ ...i }));
+                parsed.inventoryCount = parsed.fullInventory.reduce((s, i) => s + (i.qty || 1), 0);
+                parsed.topInventory = parsed.fullInventory.slice(0, 8);
+                parsed.weaponsList = parsed.baseWeaponsList.map(w => ({ ...w }));
+            }
+
             lastFetchedDdbChar = parsed;
             localStorage.setItem('runeterra_last_ddb_char', JSON.stringify(parsed));
 
@@ -4024,6 +4051,121 @@
             renderMarketplace();
             if (!silent) {
                 showToast(`Synced ${c.name} to Summoner Profile (${matchedClass} Lvl ${state.level}, STR ${strVal}, Purse: ${c.totalGP} GP)!`, 'success');
+            }
+        }
+
+        function getCharacterPurchaseLedger(charId) {
+            if (!charId) return { spentGP: 0, items: [] };
+            try {
+                const raw = localStorage.getItem('runeterra_ddb_purchase_ledger');
+                const all = raw ? JSON.parse(raw) : {};
+                return all[String(charId)] || { spentGP: 0, items: [] };
+            } catch (e) {
+                return { spentGP: 0, items: [] };
+            }
+        }
+
+        function recordCharacterPurchaseLedger(charId, spentGP, purchasedItems) {
+            if (!charId) return;
+            try {
+                const raw = localStorage.getItem('runeterra_ddb_purchase_ledger');
+                const all = raw ? JSON.parse(raw) : {};
+                const current = all[String(charId)] || { spentGP: 0, items: [] };
+                current.spentGP = parseFloat(((current.spentGP || 0) + spentGP).toFixed(2));
+                if (!Array.isArray(current.items)) current.items = [];
+
+                purchasedItems.forEach(newItem => {
+                    const idx = current.items.findIndex(i => i.name.toLowerCase() === newItem.name.toLowerCase());
+                    if (idx >= 0) {
+                        current.items[idx].qty = (current.items[idx].qty || 1) + (newItem.qty || 1);
+                    } else {
+                        current.items.push(newItem);
+                    }
+                });
+
+                all[String(charId)] = current;
+                localStorage.setItem('runeterra_ddb_purchase_ledger', JSON.stringify(all));
+            } catch (e) {}
+        }
+
+        function confirmAndApplyPurchaseToSheet() {
+            const cartKeys = Object.keys(state.cart);
+            if (cartKeys.length === 0) {
+                showToast('Your cart is empty!', 'info');
+                return;
+            }
+
+            const fullDb = getFullDatabase();
+            let totalSpent = 0;
+            const purchasedEntries = [];
+
+            const c = lastFetchedDdbChar;
+            const strMod = Math.floor(((c?.stats?.STR || state.strScore || 10) - 10) / 2);
+            const dexMod = Math.floor(((c?.stats?.DEX || 10) - 10) / 2);
+            const pb = c?.proficiencyBonus || 2;
+
+            for (const [id, qty] of Object.entries(state.cart)) {
+                if (!qty || qty <= 0) continue;
+                const item = fullDb.find(i => i.id === id);
+                if (!item) continue;
+
+                totalSpent += (item.costGP || 0) * qty;
+
+                let weaponEntry = null;
+                if (item.category === 'Weapons' || item.damage) {
+                    const propStr = [item.damage, item.mastery ? `Mastery: ${item.mastery}` : ''].filter(Boolean).join(' • ');
+                    const isFinesseOrRanged = (item.desc || '').toLowerCase().includes('finesse') || (item.subsection || '').toLowerCase().includes('ranged');
+                    const atkMod = isFinesseOrRanged ? Math.max(strMod, dexMod) : strMod;
+                    const toHit = atkMod + pb;
+                    weaponEntry = {
+                        name: item.name,
+                        equipped: true,
+                        toHit: toHit >= 0 ? `+${toHit}` : `${toHit}`,
+                        damage: item.damage || 'Special',
+                        properties: propStr || 'Marketplace Weapon',
+                        isMarketplacePurchase: true
+                    };
+                }
+
+                purchasedEntries.push({
+                    name: item.name,
+                    qty: qty,
+                    weight: item.weight || 0,
+                    equipped: true,
+                    type: item.category || 'Gear',
+                    rarity: item.rarity || 'Common',
+                    isMarketplacePurchase: true,
+                    weaponEntry
+                });
+            }
+
+            if (c) {
+                // Permanently commit the current cart into the character's baseline sheet inventory & purse
+                syncMarketplacePurchasesToLinkedSheet();
+                c.baseTotalGP = c.totalGP;
+                c.baseCurrencies = { ...c.currencies };
+                c.baseInventory = c.fullInventory.map(i => ({ ...i }));
+                c.baseWeaponsList = c.weaponsList.map(w => ({ ...w }));
+                recordCharacterPurchaseLedger(c.id, totalSpent, purchasedEntries);
+
+                state.baseGold = c.totalGP;
+                const goldIn = document.getElementById('charBaseGoldInput');
+                if (goldIn) goldIn.value = c.totalGP;
+            } else {
+                state.baseGold = parseFloat(Math.max(0, state.baseGold - totalSpent).toFixed(2));
+                const goldIn = document.getElementById('charBaseGoldInput');
+                if (goldIn) goldIn.value = state.baseGold;
+            }
+
+            // Clear the cart now that items are permanently owned on the character sheet
+            state.cart = {};
+            recalculateTotals();
+            closeFinalCheckoutModal();
+
+            if (c) {
+                showToast(`Purchase Complete! Deducted ${totalSpent.toLocaleString()} GP and permanently added items to ${c.name}'s Character Sheet.`, 'success');
+            } else {
+                showToast(`Purchase Complete! Deducted ${totalSpent.toLocaleString()} GP from your Available Purse.`, 'success');
             }
         }
 
