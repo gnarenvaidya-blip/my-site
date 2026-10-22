@@ -210,30 +210,12 @@
         <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-stone-950/60 to-black/90 pointer-events-none"></div>
         <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 50% 42%, rgba(212,175,55,0.16) 0%, rgba(10,6,15,0.85) 75%);"></div>
 
-        <!-- Decorative Corner Frame Borders -->
-        <div class="absolute inset-3 md:inset-6 border border-dndgold-500/30 rounded-2xl pointer-events-none flex flex-col justify-between p-4">
-            <div class="flex justify-between text-dndgold-400/50 text-[10px] md:text-xs">
-                <span>✦ RUNETERRA 5.5E CAMPAIGN CODEX</span>
-                <span>2024 PLAYER'S HANDBOOK EDITION ✦</span>
-            </div>
-            <div class="flex justify-between text-dndgold-400/50 text-[10px] md:text-xs">
-                <span>✦ SPECIES • CLASSES • RULEBOOK • MARKETPLACE</span>
-                <span>WORLD RUNES AWAKENED ✦</span>
-            </div>
-        </div>
-
         <!-- Central Content -->
         <div class="relative z-10 max-w-4xl w-full text-center flex flex-col items-center space-y-3.5 my-auto py-4">
             <!-- Emblem Logo -->
             <div class="relative">
                 <div class="absolute -inset-6 rounded-full bg-dndgold-500/20 blur-2xl pointer-events-none"></div>
                 <img src="Logo.png" alt="Runeterra Enigma Emblem" class="h-20 md:h-28 w-auto object-contain mx-auto rune-logo-glow">
-            </div>
-
-            <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-stone-950/80 border border-dndgold-500/50 text-dndgold-300 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] shadow-lg">
-                <i class="fa-solid fa-dragon text-dndgold-400"></i>
-                <span>Official Campaign Companion &amp; Summoner Portal</span>
             </div>
 
             <!-- Main Title in Mangoli Font -->
@@ -246,55 +228,38 @@
                 Forge your champion across the twelve mortal realms of Runeterra, master the <span class="text-dndgold-300 font-bold">2024 D&amp;D 5.5e Core Rules</span>, and outfit your party at the <span class="text-dndgold-300 font-bold">Runeterra Grand Marketplace</span>.
             </p>
 
-            <!-- Animated Runic Loading Bar -->
-            <div id="introLoadingBox" class="w-full max-w-md space-y-1.5">
-                <div class="flex justify-between text-[11px] font-mono font-bold text-dndgold-300">
-                    <span id="introLoadStatus">Awakening World Runes &amp; Regional Lore...</span>
-                    <span id="introLoadPercent">0%</span>
-                </div>
-                <div class="w-full h-2 bg-stone-950/90 rounded-full overflow-hidden border border-dndgold-500/50 p-0.5 shadow-inner">
-                    <div id="introLoadBar" class="h-full bg-gradient-to-r from-dndred-600 via-dndgold-500 to-amber-300 rounded-full transition-all duration-150" style="width: 0%"></div>
-                </div>
-            </div>
-
             <!-- Enter Portal & Summoner Login / Profile Actions -->
             <div id="introActionButtons" class="pt-1 flex flex-col items-center space-y-3.5 w-full max-w-2xl">
-                <!-- Primary Action Buttons Row: Enter Runeterra (Synchronized with Login/Signup) + Login/Signup Toggle -->
+                <!-- Primary Action Buttons Row: Enter Runeterra (Direct Portal Entry) + Sign Out (when signed in) -->
                 <div class="flex flex-wrap items-center justify-center gap-3">
-                    <button onclick="handleIntroEnterRuneterra('creation')" class="group relative px-8 py-3 bg-gradient-to-r from-dndgold-600 via-dndgold-400 to-amber-500 hover:from-dndgold-400 hover:to-amber-300 text-stone-950 font-mangoli text-base md:text-lg rounded-xl shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:shadow-[0_0_45px_rgba(240,211,118,0.85)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 border-2 border-amber-200 flex items-center gap-3">
+                    <button type="button" onclick="enterRuneterraPortal('creation')" class="group relative px-8 py-3 bg-gradient-to-r from-dndgold-600 via-dndgold-400 to-amber-500 hover:from-dndgold-400 hover:to-amber-300 text-stone-950 font-mangoli text-base md:text-lg rounded-xl shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:shadow-[0_0_45px_rgba(240,211,118,0.85)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 border-2 border-amber-200 flex items-center gap-3">
                         <i class="fa-solid fa-dungeon text-stone-950"></i>
                         <span id="introEnterRuneterraBtnText">Enter Runeterra</span>
                         <i class="fa-solid fa-arrow-right text-stone-950 group-hover:translate-x-1 transition-transform"></i>
                     </button>
 
-                    <button id="introAuthSyncBtn" onclick="focusIntroAuthOrProfile()" class="px-5 py-3 bg-stone-950/90 hover:bg-stone-900 text-emerald-300 hover:text-emerald-200 font-mangoli text-sm md:text-base rounded-xl border-2 border-emerald-500/60 shadow-[0_0_25px_rgba(16,185,129,0.25)] transition-all flex items-center gap-2 active:scale-95">
-                        <i id="introAuthSyncBtnIcon" class="fa-solid fa-user-shield text-emerald-400"></i>
-                        <span id="introAuthSyncBtnText">Summoner Login / Sign Up</span>
+                    <button id="introTopSignOutBtn" onclick="logoutSummonerAccount()" class="hidden px-5 py-3 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white font-mangoli text-sm md:text-base rounded-xl border-2 border-red-500/60 shadow-[0_0_25px_rgba(239,68,68,0.25)] transition-all flex items-center gap-2 active:scale-95">
+                        <i class="fa-solid fa-right-from-bracket text-red-400"></i>
+                        <span>Sign Out</span>
                     </button>
                 </div>
 
                 <!-- ======================================================================
-                     SUMMONER LOGIN / SIGN UP & INTRO PROFILE HUB (NO EMAIL REQUIRED)
-                     When logged out: Summoner Name + Password + D&D Beyond Character Link
-                     When logged in: Intro Page becomes Summoner's Profile with Saved Characters
-                     + "Add More Characters" D&D Beyond Sheet Link Type-In Bar!
+                     SUMMONER SIGN IN / SIGN UP & INTRO PROFILE HUB (NO EMAIL REQUIRED)
                      ====================================================================== -->
                 <div id="introSummonerHubCard" class="w-full bg-stone-950/92 backdrop-blur-md p-4 md:p-5 rounded-2xl border-2 border-dndgold-500/70 shadow-[0_0_35px_rgba(212,175,55,0.25)] text-left space-y-3.5">
 
-                    <!-- VIEW A: LOGGED OUT — SUMMONER LOGIN / SIGN UP FORM (NO EMAIL) -->
+                    <!-- VIEW A: LOGGED OUT — SUMMONER SIGN IN / SIGN UP FORM (NO EMAIL) -->
                     <div id="introAuthFormView" class="space-y-3">
                         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-dndgold-500/30 pb-2.5">
-                            <div>
-                                <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold block">Summoner Portal Authentication</span>
-                                <h3 class="font-mangoli text-base md:text-lg text-amber-100 flex items-center gap-2">
-                                    <i class="fa-solid fa-scroll text-dndgold-400"></i>
-                                    <span id="introAuthHeadingText">Summoner Login / Sign Up</span>
-                                </h3>
-                            </div>
-                            <!-- Login / Sign Up Mode Switcher -->
+                            <h3 class="font-mangoli text-base md:text-lg text-amber-100 flex items-center gap-2">
+                                <i class="fa-solid fa-scroll text-dndgold-400"></i>
+                                <span id="introAuthHeadingText">Summoner Sign In / Sign Up</span>
+                            </h3>
+                            <!-- Sign In / Sign Up Mode Switcher -->
                             <div class="inline-flex bg-black/80 p-1 rounded-xl border border-dndgold-500/40 text-xs font-bold">
                                 <button type="button" id="introModeBtn-login" onclick="switchSummonerAuthMode('login')" class="px-3.5 py-1 rounded-lg bg-emerald-600 text-white shadow transition">
-                                    Log In
+                                    Sign In
                                 </button>
                                 <button type="button" id="introModeBtn-signup" onclick="switchSummonerAuthMode('signup')" class="px-3.5 py-1 rounded-lg text-amber-200 hover:text-white transition">
                                     Sign Up
@@ -322,24 +287,19 @@
                             </div>
                         </div>
 
-                        <!-- D&D Beyond Character Sheet Link Type-In Bar -->
-                        <div>
-                            <div class="flex items-center justify-between text-[10px] font-bold mb-1">
-                                <span class="text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
-                                    <i class="fa-solid fa-dragon text-sky-400"></i> D&amp;D Beyond Character Sheet Link <span id="introDdbFieldHint" class="text-amber-300/80 font-normal normal-case">(Linked to your Summoner Profile)</span>
-                                </span>
-                                <span id="introDdbStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-500/40">Public Sheet URL / ID</span>
-                            </div>
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <input id="introDdbUrlInput" type="text" onkeydown="if(event.key==='Enter') submitSummonerAuthAndEnter('creation')" placeholder="Paste D&D Beyond Character Sheet Link (e.g. https://www.dndbeyond.com/characters/12345678)" class="flex-grow bg-black/85 border border-sky-500/50 rounded-xl px-3.5 py-2.5 text-xs text-amber-100 font-mono placeholder-sky-200/40 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
-                                <button type="button" onclick="submitSummonerAuthAndEnter('creation')" id="introDdbImportBtn" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black rounded-xl shadow-lg text-xs flex items-center justify-center gap-2 whitespace-nowrap transition transform active:scale-95 border border-emerald-300/40">
-                                    <i class="fa-solid fa-right-to-bracket"></i>
-                                    <span id="introAuthSubmitBtnLabel">Log In &amp; Enter Runeterra</span>
-                                </button>
-                            </div>
-                            <p class="text-[10px] text-amber-200/70 mt-1">
-                                Tip: Clicking <strong>"Enter Runeterra"</strong> above automatically synchronizes with this Login / Sign Up form or imports your linked D&amp;D Beyond sheet!
-                            </p>
+                        <!-- D&D Beyond Character Sheet Link Type-In Bar (Only shown on Sign Up) -->
+                        <div id="introSignupDdbBox" class="hidden">
+                            <label class="block text-sky-300 font-bold mb-1 uppercase tracking-wider text-[10px]">
+                                <i class="fa-solid fa-dragon text-sky-400 mr-1"></i>D&amp;D Beyond Character Sheet Link
+                            </label>
+                            <input id="introDdbUrlInput" type="text" onkeydown="if(event.key==='Enter') submitSummonerAuthAndEnter('creation')" placeholder="Paste D&D Beyond Character Sheet Link (e.g. https://www.dndbeyond.com/characters/12345678)" class="w-full bg-black/85 border border-sky-500/50 rounded-xl px-3.5 py-2.5 text-xs text-amber-100 font-mono placeholder-sky-200/40 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
+                        </div>
+
+                        <div class="flex justify-end pt-1">
+                            <button type="button" onclick="submitSummonerAuthAndEnter('creation')" id="introDdbImportBtn" class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black rounded-xl shadow-lg text-xs flex items-center justify-center gap-2 whitespace-nowrap transition transform active:scale-95 border border-emerald-300/40">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                <span id="introAuthSubmitBtnLabel">Sign In &amp; Enter Runeterra</span>
+                            </button>
                         </div>
                     </div>
 
@@ -352,7 +312,7 @@
                                 <div>
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-[9px] font-mono uppercase tracking-widest font-bold">
-                                            <i class="fa-solid fa-circle-check mr-1"></i>Summoner Profile Active
+                                            <i class="fa-solid fa-circle-check mr-1"></i>Signed In
                                         </span>
                                         <span id="introProfileCharCountBadge" class="px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-500/40 text-[9px] font-mono font-bold">
                                             0 Linked Characters
@@ -370,8 +330,8 @@
                                 <button type="button" onclick="enterRuneterraPortal('creation')" class="px-3.5 py-2 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-xl text-xs shadow flex items-center gap-1.5">
                                     <i class="fa-solid fa-scroll"></i> View Sheet
                                 </button>
-                                <button type="button" onclick="logoutSummonerAccount()" class="px-3 py-2 bg-red-950/90 hover:bg-red-800 text-red-200 rounded-xl border border-red-500/40 text-xs font-bold flex items-center gap-1.5 transition" title="Switch Summoner or Log Out">
-                                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                                <button type="button" onclick="logoutSummonerAccount()" class="px-3 py-2 bg-red-950/90 hover:bg-red-800 text-red-200 rounded-xl border border-red-500/40 text-xs font-bold flex items-center gap-1.5 transition" title="Switch Summoner or Sign Out">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
                                 </button>
                             </div>
                         </div>
@@ -382,7 +342,6 @@
                                 <span class="text-dndgold-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
                                     <i class="fa-solid fa-users-viewfinder text-dndgold-400"></i> Your Linked D&amp;D Beyond Characters
                                 </span>
-                                <span class="text-[10px] text-stone-400 font-mono">Click any character to set active &amp; sync</span>
                             </div>
                             <div id="introProfileCharactersGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1 custom-scrollbar">
                                 <!-- Populated dynamically by renderIntroSummonerProfile() -->
@@ -391,9 +350,8 @@
 
                         <!-- Add More Characters Bar (D&D Beyond Character Sheet Link Type-In Bar) -->
                         <div class="p-3 rounded-xl bg-stone-900/95 border border-sky-500/50 space-y-1.5">
-                            <label class="text-[10px] font-bold text-sky-300 uppercase tracking-wider flex items-center justify-between">
-                                <span><i class="fa-solid fa-plus-circle text-emerald-400 mr-1"></i> Add More Characters — Paste D&amp;D Beyond Character Sheet Link</span>
-                                <span class="text-[9px] font-mono text-amber-300/80">Auto-saves to your Summoner Profile</span>
+                            <label class="text-[10px] font-bold text-sky-300 uppercase tracking-wider block">
+                                <i class="fa-solid fa-plus-circle text-emerald-400 mr-1"></i> Add More Characters — Paste D&amp;D Beyond Character Sheet Link
                             </label>
                             <div class="flex flex-col sm:flex-row gap-2">
                                 <input id="introProfileAddCharInput" type="text" onkeydown="if(event.key==='Enter') addCharacterToSummonerProfile()" placeholder="Paste another D&D Beyond Character URL or ID (e.g. https://www.dndbeyond.com/characters/12345678)" class="flex-grow bg-black/85 border border-sky-500/50 rounded-xl px-3 py-2 text-xs text-amber-100 font-mono placeholder-sky-200/40 focus:outline-none focus:ring-2 focus:ring-dndgold-400">
@@ -404,22 +362,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Direct Destination Pills -->
-                <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-bold">
-                    <button onclick="handleIntroEnterRuneterra('creation')" class="px-3.5 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
-                        <i class="fa-solid fa-helmet-safety text-dndgold-400"></i>
-                        <span>1. Regional Character Creation</span>
-                    </button>
-                    <button onclick="handleIntroEnterRuneterra('rulebook')" class="px-3.5 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
-                        <i class="fa-solid fa-book-open text-sky-400"></i>
-                        <span>2. 5.5e Rulebook Primer</span>
-                    </button>
-                    <button onclick="handleIntroEnterRuneterra('marketplace')" class="px-3.5 py-2 rounded-lg bg-stone-950/85 hover:bg-stone-900 text-amber-200 hover:text-dndgold-300 border border-dndgold-500/40 hover:border-dndgold-400 transition-all flex items-center gap-2 shadow">
-                        <i class="fa-solid fa-coins text-emerald-400"></i>
-                        <span>3. Lore Marketplace</span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -468,7 +410,11 @@
                 <!-- Re-open Intro / Summoner Profile Button -->
                 <button onclick="reopenIntroScreen()" id="headerSummonerProfileBtn" class="px-2.5 py-1.5 bg-stone-950/90 hover:bg-stone-800 text-emerald-300 rounded-md border border-emerald-500/50 transition-all duration-200 flex items-center gap-1.5 shadow" title="Open Summoner Profile & Intro Screen">
                     <i id="headerSummonerIcon" class="fa-solid fa-user-shield text-emerald-400"></i>
-                    <span id="headerSummonerLabel">Summoner Login</span>
+                    <span id="headerSummonerLabel">Sign In</span>
+                </button>
+                <button onclick="logoutSummonerAccount()" id="headerSignOutBtn" class="hidden px-2.5 py-1.5 bg-red-950/90 hover:bg-red-800 text-red-200 rounded-md border border-red-500/50 transition-all duration-200 flex items-center gap-1.5 shadow" title="Sign Out">
+                    <i class="fa-solid fa-right-from-bracket text-red-400"></i>
+                    <span>Sign Out</span>
                 </button>
 
                 <!-- D&D Beyond Sync Trigger -->
@@ -478,21 +424,21 @@
                     <span id="dndBeyondStatusDot" class="w-2 h-2 rounded-full bg-amber-500" title="Sheet not linked yet"></span>
                 </button>
 
-                <!-- DM Special Market Workshop Trigger -->
-                <button onclick="toggleSpecialMarketModal()" class="px-3 py-1.5 bg-zaun-900/90 hover:bg-zaun-600 text-purple-200 hover:text-white rounded-md border border-purple-500/50 shadow transition-all duration-200 flex items-center gap-1.5 active:scale-95">
+                <!-- DM Special Market Workshop Trigger (Marketplace Only) -->
+                <button id="headerSpecialMarketBtn" onclick="toggleSpecialMarketModal()" class="hidden px-3 py-1.5 bg-zaun-900/90 hover:bg-zaun-600 text-purple-200 hover:text-white rounded-md border border-purple-500/50 shadow transition-all duration-200 flex items-center gap-1.5 active:scale-95">
                     <i class="fa-solid fa-hat-wizard text-purple-300"></i>
                     <span class="hidden sm:inline">DM Special Market</span>
                 </button>
 
-                <!-- Wishlist Drawer Trigger -->
-                <button onclick="toggleWishlistDrawer()" class="relative px-3 py-1.5 bg-rose-950/90 hover:bg-rose-700 text-rose-200 hover:text-white font-bold rounded-md border border-rose-500/50 shadow transition-all duration-200 active:scale-95 flex items-center gap-1.5">
+                <!-- Wishlist Drawer Trigger (Marketplace Only) -->
+                <button id="headerWishlistBtn" onclick="toggleWishlistDrawer()" class="hidden relative px-3 py-1.5 bg-rose-950/90 hover:bg-rose-700 text-rose-200 hover:text-white font-bold rounded-md border border-rose-500/50 shadow transition-all duration-200 active:scale-95 flex items-center gap-1.5">
                     <i class="fa-solid fa-heart text-rose-400"></i>
                     <span class="hidden sm:inline">Wishlist</span>
                     <span id="wishlistBadgeCount" class="bg-rose-600 text-white text-[11px] px-1.5 py-0.2 rounded-full font-sans border border-rose-300 font-bold">0</span>
                 </button>
 
-                <!-- Cart Drawer Trigger -->
-                <button onclick="toggleCartDrawer()" class="relative px-3.5 py-1.5 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-md shadow-lg transition-transform active:scale-95 flex items-center gap-2">
+                <!-- Cart Drawer Trigger (Marketplace Only) -->
+                <button id="headerCartBtn" onclick="toggleCartDrawer()" class="hidden relative px-3.5 py-1.5 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-md shadow-lg transition-transform active:scale-95 flex items-center gap-2">
                     <i class="fa-solid fa-sack-dollar text-sm"></i>
                     <span>Cart</span>
                     <span id="cartBadgeCount" class="bg-dndred-700 text-white text-[11px] px-2 py-0.2 rounded-full font-sans border border-amber-300 font-bold">0</span>
@@ -518,7 +464,7 @@
                         <span class="px-2.5 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-400/50 text-[10px] font-mono font-bold uppercase tracking-wider">
                             <i class="fa-solid fa-link mr-1"></i> D&amp;D Beyond Live Sync
                         </span>
-                        <a href="https://www.dndbeyond.com/campaigns/join/81895293217380957" target="_blank" rel="noopener noreferrer" class="text-[11px] text-dndgold-300 hover:underline font-bold flex items-center gap-1">
+                        <a id="firstPageCampaignLink" href="https://www.dndbeyond.com/campaigns/join/81895293217380957" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] text-dndgold-300 hover:underline font-bold flex items-center gap-1">
                             <i class="fa-solid fa-user-plus"></i> Join Campaign #8189529
                         </a>
                     </div>
@@ -529,10 +475,13 @@
                         Paste your public D&amp;D Beyond Character URL or ID below to render your full Runeterra-styled Character Sheet and auto-sync your Marketplace Summoner Profile &amp; Gold Purse.
                     </p>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-2 min-w-0 lg:w-[460px]">
+                <div class="flex flex-col sm:flex-row gap-2 min-w-0 lg:w-[540px]">
                     <input id="firstPageDdbInput" type="text" onkeydown="if(event.key==='Enter') importFromFirstPageBar()" placeholder="https://www.dndbeyond.com/characters/12345678" class="flex-grow bg-stone-950/90 border border-sky-500/50 rounded-xl px-3.5 py-2.5 text-xs text-sky-100 font-mono focus:outline-none focus:ring-2 focus:ring-dndgold-400">
                     <button onclick="importFromFirstPageBar()" id="firstPageDdbBtn" class="px-4 py-2.5 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-xl shadow-lg text-xs flex items-center justify-center gap-1.5 whitespace-nowrap">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Load Sheet
+                    </button>
+                    <button onclick="unsyncCharacterSheet()" id="firstPageUnsyncBtn" class="hidden px-3.5 py-2.5 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white font-bold rounded-xl border border-red-500/50 shadow text-xs flex items-center justify-center gap-1.5 whitespace-nowrap transition" title="Unsync Character Sheet & View Website Fresh">
+                        <i class="fa-solid fa-link-slash text-red-400"></i> Unsync
                     </button>
                 </div>
             </div>
@@ -1136,7 +1085,7 @@
     </section>
 
     <!-- ==========================================================================
-         TAB 2: 5.5e RULEBOOK PRIMER TAB (From Runeterra DnD Primer.pptx - 35 Slides)
+         TAB 2: 5.5e RULEBOOK PRIMER TAB
          ========================================================================== -->
     <section id="tabView-rulebook" class="portal-tab-view hidden max-w-7xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
 
@@ -1146,7 +1095,7 @@
                 <div>
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-950/90 border border-sky-400/50 text-sky-300 text-[11px] font-bold uppercase tracking-widest mb-2">
                         <i class="fa-solid fa-book-journal-whills"></i>
-                        <span>Complete 35-Slide D&amp;D 5.5e Rules Primer</span>
+                        <span>Complete D&amp;D 5.5e Rules Primer</span>
                     </div>
                     <h2 class="font-mangoli text-2xl sm:text-3xl md:text-4xl text-amber-100">
                         D&amp;D 5.5e Rulebook &amp; Runeterra Primer
@@ -1163,15 +1112,17 @@
                 </div>
             </div>
 
-            <!-- Chapter Filter Buttons -->
+            <!-- Chapter Filter Buttons (1-to-1 match with the 8 Rulebook Sections) -->
             <div class="flex flex-wrap gap-2 pt-2 border-t border-stone-800 text-xs font-bold" id="rulebookChapterButtons">
-                <button onclick="setRulebookChapter('all')" data-rchap="all" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-dndgold-500 text-stone-950 font-black border border-dndgold-400 shadow">All Chapters (35 Slides)</button>
-                <button onclick="setRulebookChapter('core')" data-rchap="core" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">1. Core Engine &amp; D20 Tests</button>
-                <button onclick="setRulebookChapter('abilities')" data-rchap="abilities" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">2. Abilities, Skills &amp; Checks</button>
-                <button onclick="setRulebookChapter('combat')" data-rchap="combat" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">3. HP, AC, Combat &amp; Masteries</button>
-                <button onclick="setRulebookChapter('damage')" data-rchap="damage" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">4. Damage, 0 HP &amp; Resting</button>
-                <button onclick="setRulebookChapter('spells')" data-rchap="spells" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">5. Spellcasting &amp; Concentration</button>
-                <button onclick="setRulebookChapter('conditions')" data-rchap="conditions" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">6. Gear, 15 Conditions &amp; Travel</button>
+                <button onclick="setRulebookChapter('all')" data-rchap="all" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-dndgold-500 text-stone-950 font-black border border-dndgold-400 shadow">All Sections</button>
+                <button onclick="setRulebookChapter('rb_core_loop')" data-rchap="rb_core_loop" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">1. Core Gameplay Loop</button>
+                <button onclick="setRulebookChapter('rb_d20_tests')" data-rchap="rb_d20_tests" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">2. Dice &amp; D20 Tests</button>
+                <button onclick="setRulebookChapter('rb_abilities_skills')" data-rchap="rb_abilities_skills" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">3. Abilities &amp; Skills</button>
+                <button onclick="setRulebookChapter('rb_hp_ac_movement')" data-rchap="rb_hp_ac_movement" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">4. HP, AC &amp; Movement</button>
+                <button onclick="setRulebookChapter('rb_combat_actions')" data-rchap="rb_combat_actions" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">5. Combat &amp; Weapon Mastery</button>
+                <button onclick="setRulebookChapter('rb_damage_death_rest')" data-rchap="rb_damage_death_rest" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">6. Damage, 0 HP &amp; Resting</button>
+                <button onclick="setRulebookChapter('rb_spellcasting')" data-rchap="rb_spellcasting" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">7. Spellcasting</button>
+                <button onclick="setRulebookChapter('rb_gear_conditions_travel')" data-rchap="rb_gear_conditions_travel" class="rulebook-chap-btn px-3 py-1.5 rounded-lg bg-stone-900/90 text-amber-200 hover:bg-stone-800 border border-stone-700">8. Gear, Conditions &amp; Travel</button>
             </div>
         </div>
 
@@ -1231,9 +1182,14 @@
                         <div id="marketSummonerProfBox" class="text-[10px] text-amber-200/80 bg-black/60 px-2.5 py-1.5 rounded border border-stone-800">
                             <strong class="text-dndgold-300">Market Proficiencies:</strong> <span id="marketSummonerProfText">All Armor, Shields, Simple &amp; Martial Weapons</span>
                         </div>
-                        <button onclick="toggleDndBeyondModal()" class="w-full py-1.5 px-3 bg-sky-900/80 hover:bg-sky-700 text-sky-100 rounded-lg border border-sky-400/50 text-[11px] font-bold flex items-center justify-center gap-1.5 transition">
-                            <i class="fa-solid fa-cloud-arrow-down text-sky-300"></i> Import / Switch D&amp;D Beyond Sheet
-                        </button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                            <button onclick="toggleDndBeyondModal()" class="w-full py-1.5 px-3 bg-sky-900/80 hover:bg-sky-700 text-sky-100 rounded-lg border border-sky-400/50 text-[11px] font-bold flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-cloud-arrow-down text-sky-300"></i> Sync / Switch Sheet
+                            </button>
+                            <button onclick="unsyncCharacterSheet()" id="marketUnsyncBtn" class="w-full py-1.5 px-3 bg-red-950/80 hover:bg-red-800 text-red-200 rounded-lg border border-red-500/40 text-[11px] font-bold flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-link-slash text-red-400"></i> Unsync / View Fresh
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1684,8 +1640,8 @@
             </div>
 
             <div class="space-y-5 text-xs text-amber-100">
-                <!-- Active Running Campaign Banner (Pre-linked to Campaign #8189529) -->
-                <div class="bg-gradient-to-r from-sky-950/90 via-stone-900/95 to-indigo-950/90 p-4 rounded-xl border border-sky-400/60 shadow-lg space-y-3">
+                <!-- Active Running Campaign Banner (Shown only when a character sheet is synced) -->
+                <div id="ddbActiveCampaignBanner" class="hidden bg-gradient-to-r from-sky-950/90 via-stone-900/95 to-indigo-950/90 p-4 rounded-xl border border-sky-400/60 shadow-lg space-y-3">
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <div>
                             <span class="text-[10px] font-mono uppercase tracking-widest text-sky-300 font-bold block">Active Running Campaign Linked</span>
@@ -1709,9 +1665,14 @@
 
                 <!-- Step 1: Fetch Live Character Sheet & Auto-Discover Campaign Party -->
                 <div class="bg-sky-950/60 p-4 rounded-xl border border-sky-500/40 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <label class="font-bold text-sky-300 uppercase tracking-wider block">1. Fetch Live Character Sheet &amp; Campaign Roster</label>
-                        <span id="linkedCharacterBadge" class="text-[10px] px-2 py-0.5 rounded bg-sky-900 text-sky-200 border border-sky-400/50">Not Connected</span>
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <label class="font-bold text-sky-300 uppercase tracking-wider block">Fetch Live Character Sheet &amp; Campaign Roster</label>
+                        <div class="flex items-center gap-2">
+                            <span id="linkedCharacterBadge" class="text-[10px] px-2 py-0.5 rounded bg-sky-900 text-sky-200 border border-sky-400/50">Not Connected</span>
+                            <button onclick="unsyncCharacterSheet()" id="modalUnsyncBtn" class="hidden px-2.5 py-1 bg-red-950/90 hover:bg-red-800 text-red-200 rounded border border-red-500/50 text-[10px] font-bold flex items-center gap-1 transition" title="Unsync Character Sheet & View Website Fresh">
+                                <i class="fa-solid fa-link-slash text-red-400"></i> Unsync / View Fresh
+                            </button>
+                        </div>
                     </div>
                     <p class="text-amber-200/85 leading-relaxed text-[11px]">
                         Set your D&amp;D Beyond character's privacy to <strong>Public</strong> (<em>Character Settings → Character Privacy → Public</em>), then paste your <strong>Character URL or ID</strong> below. It will fetch your live <strong>Stats, Class, Level, Gold, Inventory</strong> AND automatically discover <strong>every other Character in your Campaign</strong>!
@@ -1748,70 +1709,12 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Step 1B: 1-Click Campaign Page Console Extractor (Works even for Private Sheets!) -->
-                <div class="bg-stone-900/90 p-4 rounded-xl border border-emerald-500/40 space-y-2.5">
-                    <div class="flex flex-wrap justify-between items-center gap-2">
-                        <strong class="font-mangoli text-emerald-300 text-sm block flex items-center gap-1.5">
-                            <i class="fa-solid fa-wand-magic-sparkles text-emerald-400"></i> Sync Entire Campaign Page Directly (Even Private Sheets)
-                        </strong>
-                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">Works on Campaign #8189529</span>
-                    </div>
-                    <p class="text-amber-200/80 leading-relaxed text-[11px]">
-                        Because D&amp;D Beyond requires your login cookie to view the Campaign Page directly, click <strong>1. Copy Campaign Extractor</strong> below, open your <a href="https://www.dndbeyond.com/campaigns/8189529" target="_blank" class="text-sky-400 underline font-bold">D&amp;D Beyond Campaign Page</a>, press <kbd class="px-1.5 py-0.5 bg-black rounded border border-stone-600 text-amber-300">F12</kbd> (Console), paste &amp; press Enter. Then paste the copied JSON below!
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <button onclick="copyCampaignExtractorScript()" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded-lg shadow text-xs flex items-center justify-center gap-1.5 whitespace-nowrap">
-                            <i class="fa-solid fa-copy"></i> 1. Copy Campaign Extractor
-                        </button>
-                        <input id="ddbCampaignJsonInput" type="text" placeholder="2. Paste copied Campaign JSON here..." class="flex-grow bg-black/70 border border-emerald-500/40 rounded-lg p-2 text-emerald-100 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400">
-                        <button onclick="importCampaignJsonPayload()" class="px-3.5 py-2 bg-dndgold-500 hover:bg-dndgold-400 text-stone-950 font-black rounded-lg shadow text-xs whitespace-nowrap">
-                            3. Load Party
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Step 2: Instant 1-Click Console Importer (Export Marketplace Cart -> D&D Beyond) -->
-                <div class="bg-stone-900/90 p-4 rounded-xl border border-dndgold-500/40 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <strong class="font-cinzel text-dndgold-400 text-sm block">2. Export Marketplace Cart to D&amp;D Beyond</strong>
-                        <span class="text-[10px] px-2 py-0.5 rounded bg-dndgold-500/20 text-dndgold-300 font-mono">1-Click Auto Import</span>
-                    </div>
-                    <p class="text-amber-200/80 leading-relaxed text-[11px]">
-                        Open your character on D&amp;D Beyond in another tab, press <kbd class="px-1.5 py-0.5 bg-black rounded border border-stone-600 text-amber-300">F12</kbd> (Console), and paste this generated script to log your purchased items and gold deduction.
-                    </p>
-                    <button onclick="copyDndBeyondScript()" class="w-full py-2.5 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold rounded-lg shadow text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-terminal"></i> Copy 1-Click Cart Exporter Script
-                    </button>
-                </div>
-
-                <!-- Step 3: Formatted Equipment List & VTT JSON -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="bg-stone-900/90 p-3.5 rounded-xl border border-stone-700 space-y-2">
-                        <strong class="text-amber-300 text-xs block font-bold">Formatted Equipment Text</strong>
-                        <p class="text-[11px] text-stone-400">Copy item names and quantities formatted for D&amp;D Beyond notes or search.</p>
-                        <button onclick="exportCharacterSheet()" class="w-full py-2 bg-stone-800 hover:bg-stone-700 text-amber-200 text-xs font-bold rounded border border-stone-600 flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-copy"></i> Copy Text
-                        </button>
-                    </div>
-
-                    <div class="bg-stone-900/90 p-3.5 rounded-xl border border-stone-700 space-y-2">
-                        <strong class="text-amber-300 text-xs block font-bold">Download VTT / D&amp;D Beyond JSON</strong>
-                        <p class="text-[11px] text-stone-400">Export inventory JSON compatible with Beyond20, Foundry, and Roll20.</p>
-                        <button onclick="downloadInventoryJson()" class="w-full py-2 bg-stone-800 hover:bg-stone-700 text-amber-200 text-xs font-bold rounded border border-stone-600 flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-download"></i> Download JSON
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Currency Deduction Guide -->
-                <div class="bg-black/60 p-3 rounded-lg border border-amber-500/30 flex justify-between items-center text-xs font-mono">
-                    <span class="text-dndgold-400 font-bold">Wallet Deduction:</span>
-                    <span id="dndBeyondCurrencyDeduction" class="text-emerald-400 font-bold">0 GP</span>
-                </div>
             </div>
 
-            <div class="mt-5 pt-3 border-t border-sky-500/30 flex justify-end">
+            <div class="mt-5 pt-3 border-t border-sky-500/30 flex items-center justify-between gap-2">
+                <button onclick="unsyncCharacterSheet()" class="px-4 py-2 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white border border-red-500/50 text-xs font-bold rounded-lg shadow flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-rotate-left text-red-400"></i> Unsync Sheet &amp; View Fresh Website
+                </button>
                 <button onclick="toggleDndBeyondModal()" class="px-5 py-2 bg-sky-800 hover:bg-sky-700 text-white text-xs font-bold rounded-lg shadow">
                     Done
                 </button>
@@ -2433,10 +2336,16 @@
                     renderFetchedDndBeyondCharacter(lastFetchedDdbChar);
                     renderRuneterraFullCharacterSheet(lastFetchedDdbChar);
                     applyDdbCharacterToMarketplace(true);
-                }
-                const savedParty = localStorage.getItem('runeterra_ddb_campaign_party');
-                if (savedParty) {
-                    renderDndBeyondCampaignParty(JSON.parse(savedParty));
+
+                    const savedParty = localStorage.getItem('runeterra_ddb_campaign_party');
+                    if (savedParty) {
+                        renderDndBeyondCampaignParty(JSON.parse(savedParty));
+                    } else if (lastFetchedDdbChar.campaign && Array.isArray(lastFetchedDdbChar.campaign.characters) && lastFetchedDdbChar.campaign.characters.length > 0) {
+                        renderDndBeyondCampaignParty(lastFetchedDdbChar.campaign);
+                    }
+                } else {
+                    const partyBox = document.getElementById('ddbCampaignPartyBox');
+                    if (partyBox) partyBox.classList.add('hidden');
                 }
             } catch (e) {}
         }
@@ -2620,7 +2529,8 @@
 
             document.getElementById('drawerWeightText').innerText = `${totalWeight.toFixed(1)} lbs`;
             document.getElementById('drawerCostText').innerText = `${totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})} GP`;
-            document.getElementById('dndBeyondCurrencyDeduction').innerText = `${totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})} GP`;
+            const dedEl = document.getElementById('dndBeyondCurrencyDeduction');
+            if (dedEl) dedEl.innerText = `${totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})} GP`;
 
             renderCartDrawer();
             if (typeof saveCurrentPlayerData === 'function') saveCurrentPlayerData();
@@ -3702,11 +3612,6 @@
             if (firstPageInput && c.id) firstPageInput.value = `https://www.dndbeyond.com/characters/${c.id}`;
             const introInput = document.getElementById('introDdbUrlInput');
             if (introInput && c.id) introInput.value = `https://www.dndbeyond.com/characters/${c.id}`;
-            const introBadge = document.getElementById('introDdbStatusBadge');
-            if (introBadge) {
-                introBadge.innerText = `Linked: ${c.name} (Lvl ${c.totalLevel})`;
-                introBadge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/50 font-bold';
-            }
 
             // 6 Ability Score Runes
             const statCardsHtml = Object.entries(c.stats || {}).map(([statKey, score]) => {
@@ -3843,6 +3748,9 @@
                             </button>
                             <button onclick="fetchDndBeyondCharacterSheet('${c.id}')" class="px-3.5 py-2.5 bg-stone-900 hover:bg-stone-800 text-sky-300 rounded-xl border border-sky-500/40 text-xs font-bold flex items-center gap-1.5 transition" title="Refresh live data from D&D Beyond">
                                 <i class="fa-solid fa-arrows-rotate"></i> Sync
+                            </button>
+                            <button onclick="unsyncCharacterSheet()" class="px-3.5 py-2.5 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white rounded-xl border border-red-500/50 text-xs font-bold flex items-center gap-1.5 transition" title="Unsync Character Sheet & View Website Fresh">
+                                <i class="fa-solid fa-link-slash text-red-400"></i> Unsync
                             </button>
                             <a href="https://www.dndbeyond.com/characters/${c.id}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2.5 bg-sky-950/90 hover:bg-sky-800 text-sky-200 rounded-xl border border-sky-500/50 text-xs font-bold flex items-center gap-1.5 transition">
                                 <span>D&amp;D Beyond</span>
@@ -4012,9 +3920,14 @@
                             ${c.campaign ? `<p class="text-[10px] text-stone-400 font-mono">Campaign: <strong class="text-amber-200">${c.campaign.name}</strong> (DM: ${c.campaign.dmUsername || 'DM'})</p>` : ''}
                         </div>
                     </div>
-                    <button onclick="applyDdbCharacterToMarketplace()" class="px-3.5 py-2 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-lg shadow text-xs flex items-center gap-1.5 self-start sm:self-center whitespace-nowrap">
-                        <i class="fa-solid fa-bolt"></i> Sync to Marketplace
-                    </button>
+                    <div class="flex items-center gap-2 self-start sm:self-center">
+                        <button onclick="applyDdbCharacterToMarketplace()" class="px-3.5 py-2 bg-gradient-to-r from-dndgold-500 to-amber-500 hover:from-dndgold-400 hover:to-amber-400 text-stone-950 font-black rounded-lg shadow text-xs flex items-center gap-1.5 whitespace-nowrap">
+                            <i class="fa-solid fa-bolt"></i> Sync to Marketplace
+                        </button>
+                        <button onclick="unsyncCharacterSheet()" class="px-3 py-2 bg-red-950/90 hover:bg-red-800 text-red-200 hover:text-white font-bold rounded-lg border border-red-500/50 text-xs flex items-center gap-1.5 whitespace-nowrap transition" title="Unsync Character Sheet">
+                            <i class="fa-solid fa-link-slash text-red-400"></i> Unsync
+                        </button>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-6 gap-1.5">
@@ -4289,7 +4202,19 @@
             const dmDisp = document.getElementById('ddbCampaignDmDisplay');
             const openLink = document.getElementById('ddbCampaignOpenLink');
 
-            if (!box || !grid || !campaign) return;
+            if (!box || !grid) return;
+
+            // Only show the Party Roster when a character sheet is actively logged in / linked
+            if (!lastFetchedDdbChar || !state.dndBeyondLinkedId) {
+                box.classList.add('hidden');
+                grid.innerHTML = '';
+                return;
+            }
+
+            if (!campaign) {
+                box.classList.add('hidden');
+                return;
+            }
 
             if (campaign.name && titleDisp) {
                 titleDisp.innerText = `${campaign.name} (Campaign #${campaign.id || '8189529'})`;
@@ -4382,12 +4307,16 @@
 
         function updateDndBeyondUIStatus(charId) {
             const urlIn = document.getElementById('dndBeyondUrlInput');
-            if (urlIn && charId) urlIn.value = charId;
+            if (urlIn) urlIn.value = charId ? charId : '';
             const badge = document.getElementById('linkedCharacterBadge');
             const dot = document.getElementById('dndBeyondStatusDot');
             const deepBox = document.getElementById('characterDeepLinkBox');
             const openLink = document.getElementById('dndBeyondOpenLink');
             const charIdText = document.getElementById('linkedCharIdText');
+            const modalUnsyncBtn = document.getElementById('modalUnsyncBtn');
+            const firstPageUnsyncBtn = document.getElementById('firstPageUnsyncBtn');
+            const activeCampaignBanner = document.getElementById('ddbActiveCampaignBanner');
+            const firstPageCampaignLink = document.getElementById('firstPageCampaignLink');
 
             if (charId) {
                 badge.innerText = `Connected (#${charId})`;
@@ -4396,11 +4325,93 @@
                 deepBox.classList.remove('hidden');
                 charIdText.innerText = charId;
                 openLink.href = `https://www.dndbeyond.com/characters/${charId}`;
+                if (modalUnsyncBtn) modalUnsyncBtn.classList.remove('hidden');
+                if (firstPageUnsyncBtn) firstPageUnsyncBtn.classList.remove('hidden');
+                if (activeCampaignBanner) activeCampaignBanner.classList.remove('hidden');
+                if (firstPageCampaignLink) firstPageCampaignLink.classList.remove('hidden');
             } else {
                 badge.innerText = 'Not Connected';
+                badge.className = 'text-[10px] px-2 py-0.5 rounded bg-sky-900 text-sky-200 border border-sky-400/50';
                 dot.className = 'w-2 h-2 rounded-full bg-amber-500';
                 deepBox.classList.add('hidden');
+                if (modalUnsyncBtn) modalUnsyncBtn.classList.add('hidden');
+                if (firstPageUnsyncBtn) firstPageUnsyncBtn.classList.add('hidden');
+                if (activeCampaignBanner) activeCampaignBanner.classList.add('hidden');
+                if (firstPageCampaignLink) firstPageCampaignLink.classList.add('hidden');
             }
+        }
+
+        function unsyncCharacterSheet() {
+            lastFetchedDdbChar = null;
+            state.dndBeyondLinkedId = null;
+            localStorage.removeItem('runeterra_dndbeyond_link');
+            localStorage.removeItem('runeterra_last_ddb_char');
+
+            if (state.currentUser && state.currentUser.summonerName) {
+                const accounts = getSummonerAccounts();
+                const key = state.currentUser.summonerName.toLowerCase();
+                if (accounts[key]) {
+                    accounts[key].activeCharId = '';
+                    saveSummonerAccounts(accounts);
+                }
+            }
+
+            updateDndBeyondUIStatus('');
+
+            const fullSheet = document.getElementById('runeterraFullSheetContainer');
+            if (fullSheet) {
+                fullSheet.classList.add('hidden');
+                fullSheet.innerHTML = '';
+            }
+
+            const cardBox = document.getElementById('ddbLiveCharacterCard');
+            if (cardBox) {
+                cardBox.classList.add('hidden');
+                cardBox.innerHTML = '';
+            }
+
+            const partyBox = document.getElementById('ddbCampaignPartyBox');
+            const partyGrid = document.getElementById('ddbCampaignPartyGrid');
+            if (partyBox) partyBox.classList.add('hidden');
+            if (partyGrid) partyGrid.innerHTML = '';
+
+            const firstPageIn = document.getElementById('firstPageDdbInput');
+            if (firstPageIn) firstPageIn.value = '';
+            const introIn = document.getElementById('introDdbUrlInput');
+            if (introIn) introIn.value = '';
+
+            const headerBtn = document.getElementById('headerDdbBtnLabel');
+            if (headerBtn) headerBtn.innerText = 'D&D Beyond Sheet';
+
+            const avatarEl = document.getElementById('marketSummonerAvatar');
+            const tagEl = document.getElementById('marketSummonerSyncTag');
+            const acEl = document.getElementById('marketSummonerAc');
+            const dexEl = document.getElementById('marketSummonerDex');
+            const profEl = document.getElementById('marketSummonerProfText');
+
+            if (avatarEl) avatarEl.src = 'Logo.png';
+            if (tagEl) {
+                tagEl.innerText = 'Manual Mode (No Sheet Linked)';
+                tagEl.className = 'text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/40 font-bold inline-block mb-0.5';
+            }
+            if (acEl) acEl.innerText = '16 AC';
+            if (dexEl) dexEl.innerText = '+0';
+            if (profEl) profEl.innerText = 'All Armor, Shields, Simple & Martial Weapons';
+
+            const clsSel = document.getElementById('charClassSelect');
+            if (clsSel) clsSel.value = 'Paladin';
+            const strInput = document.getElementById('charStrInput');
+            if (strInput) strInput.value = 14;
+            state.strScore = 14;
+
+            handleLevelChange(1, true);
+            handleClassChange(false);
+            updateMarketplaceSummonerManualFallback();
+            recalculateTotals();
+            renderMarketplace();
+            renderIntroSummonerProfile();
+
+            showToast('Character sheet unsynced! Viewing website fresh.', 'info');
         }
 
         function copyDndBeyondScript() {
@@ -4652,6 +4663,24 @@
             const subEl = document.getElementById('headerPortalSubtitle');
             if (subEl && subtitles[tabId]) {
                 subEl.innerText = subtitles[tabId];
+            }
+
+            // Show DM Special Market, Wishlist, and Cart buttons only on the Marketplace tab
+            const isMarketplace = (tabId === 'marketplace');
+            ['headerSpecialMarketBtn', 'headerWishlistBtn', 'headerCartBtn'].forEach(btnId => {
+                const el = document.getElementById(btnId);
+                if (el) {
+                    if (isMarketplace) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+            if (!isMarketplace) {
+                const cartDrawer = document.getElementById('cartDrawer');
+                const wishlistDrawer = document.getElementById('wishlistDrawer');
+                const specialModal = document.getElementById('specialMarketModal');
+                if (cartDrawer) cartDrawer.classList.add('hidden');
+                if (wishlistDrawer) wishlistDrawer.classList.add('hidden');
+                if (specialModal) specialModal.classList.add('hidden');
             }
 
             tabs.forEach(t => {
@@ -5541,7 +5570,7 @@
             const query = (document.getElementById('rulebookSearchInput')?.value || '').toLowerCase().trim();
 
             const filtered = RULEBOOK_PRIMER_SECTIONS.filter(sec => {
-                const matchChap = activeRulebookChapter === 'all' || sec.chapter === activeRulebookChapter;
+                const matchChap = activeRulebookChapter === 'all' || sec.id === activeRulebookChapter || sec.chapter === activeRulebookChapter;
                 const matchQuery = !query || sec.title.toLowerCase().includes(query) || sec.keywords.toLowerCase().includes(query) || sec.html.toLowerCase().includes(query);
                 return matchChap && matchQuery;
             });
@@ -5551,7 +5580,7 @@
                     <div class="glass-panel rounded-2xl p-8 text-center text-amber-200">
                         <i class="fa-solid fa-book-open text-3xl text-dndgold-400 mb-2"></i>
                         <p class="font-mangoli text-lg">No matching rulebook sections found for "${query}".</p>
-                        <button onclick="document.getElementById('rulebookSearchInput').value=''; setRulebookChapter('all');" class="mt-3 px-4 py-1.5 rounded-lg bg-dndgold-500 text-stone-950 font-bold text-xs">Show All Chapters</button>
+                        <button onclick="document.getElementById('rulebookSearchInput').value=''; setRulebookChapter('all');" class="mt-3 px-4 py-1.5 rounded-lg bg-dndgold-500 text-stone-950 font-bold text-xs">Show All Sections</button>
                     </div>
                 `;
                 return;
@@ -5566,9 +5595,6 @@
                             <i class="fa-solid ${sec.icon} text-dndgold-400"></i>
                             <span>${sec.title}</span>
                         </h3>
-                        <span class="px-2.5 py-1 rounded-full bg-stone-950 border border-dndgold-500/40 text-dndgold-300 text-[11px] font-mono font-bold">
-                            Primer ${sec.slides}
-                        </span>
                     </div>
                     <div>${sec.html}</div>
                 `;
@@ -5602,30 +5628,27 @@
             const signupBtn = document.getElementById('introModeBtn-signup');
             const heading = document.getElementById('introAuthHeadingText');
             const submitLabel = document.getElementById('introAuthSubmitBtnLabel');
-            const syncBtnText = document.getElementById('introAuthSyncBtnText');
             const enterBtnText = document.getElementById('introEnterRuneterraBtnText');
-            const ddbHint = document.getElementById('introDdbFieldHint');
+            const signupDdbBox = document.getElementById('introSignupDdbBox');
 
             if (summonerAuthMode === 'signup') {
                 if (signupBtn) signupBtn.className = 'px-3.5 py-1 rounded-lg bg-emerald-600 text-white shadow transition';
                 if (loginBtn) loginBtn.className = 'px-3.5 py-1 rounded-lg text-amber-200 hover:text-white transition';
                 if (heading) heading.innerText = 'Create Summoner Profile (Sign Up)';
                 if (submitLabel) submitLabel.innerText = 'Sign Up & Enter Runeterra';
+                if (signupDdbBox) signupDdbBox.classList.remove('hidden');
                 if (!state.currentUser) {
-                    if (syncBtnText) syncBtnText.innerText = 'Summoner Sign Up Active';
-                    if (enterBtnText) enterBtnText.innerText = 'Sign Up & Enter Runeterra';
+                    if (enterBtnText) enterBtnText.innerText = 'Enter Runeterra';
                 }
-                if (ddbHint) ddbHint.innerText = '(Required or add your first Character Sheet Link)';
             } else {
                 if (loginBtn) loginBtn.className = 'px-3.5 py-1 rounded-lg bg-emerald-600 text-white shadow transition';
                 if (signupBtn) signupBtn.className = 'px-3.5 py-1 rounded-lg text-amber-200 hover:text-white transition';
-                if (heading) heading.innerText = 'Summoner Login / Sign Up';
-                if (submitLabel) submitLabel.innerText = 'Log In & Enter Runeterra';
+                if (heading) heading.innerText = 'Summoner Sign In / Sign Up';
+                if (submitLabel) submitLabel.innerText = 'Sign In & Enter Runeterra';
+                if (signupDdbBox) signupDdbBox.classList.add('hidden');
                 if (!state.currentUser) {
-                    if (syncBtnText) syncBtnText.innerText = 'Summoner Login / Sign Up';
                     if (enterBtnText) enterBtnText.innerText = 'Enter Runeterra';
                 }
-                if (ddbHint) ddbHint.innerText = '(Optional on Log In — auto-loads your saved sheets or adds a new one)';
             }
         }
 
@@ -5660,36 +5683,8 @@
             }
         }
 
-        /* Synchronizes the "Enter Runeterra" button & destination pills with the Login/Sign Up & D&D Beyond bar */
+        /* Direct Portal Entry for the main "Enter Runeterra" button */
         async function handleIntroEnterRuneterra(targetTab = 'creation') {
-            if (state.currentUser && state.currentUser.summonerName) {
-                // If the logged-in Summoner typed a new character URL in the "Add More Characters" bar before clicking Enter Runeterra, import it too!
-                const pendingAdd = (document.getElementById('introProfileAddCharInput')?.value || '').trim();
-                if (pendingAdd) {
-                    await addCharacterToSummonerProfile();
-                }
-                enterRuneterraPortal(targetTab);
-                return;
-            }
-
-            const nameVal = (document.getElementById('introSummonerNameInput')?.value || '').trim();
-            const passVal = document.getElementById('introSummonerPassInput')?.value || '';
-            const ddbVal = (document.getElementById('introDdbUrlInput')?.value || '').trim();
-
-            // If user typed their Summoner Name or Password, synchronize with Login/Sign Up automatically!
-            if (nameVal || passVal) {
-                await submitSummonerAuthAndEnter(targetTab);
-                return;
-            }
-
-            // If user only pasted a D&D Beyond link without logging in, import the sheet and enter
-            if (ddbVal) {
-                await saveDndBeyondLink(ddbVal);
-                enterRuneterraPortal(targetTab);
-                return;
-            }
-
-            // Otherwise enter directly
             enterRuneterraPortal(targetTab);
         }
 
@@ -5755,12 +5750,8 @@
                     }
                     state.currentUser = { summonerName: accounts[key].summonerName };
                     localStorage.setItem('runeterra_current_summoner', JSON.stringify(state.currentUser));
-                    if (Array.isArray(accounts[key].wishlist) && accounts[key].wishlist.length > 0) {
-                        state.wishlist = Array.from(new Set([...state.wishlist, ...accounts[key].wishlist]));
-                    }
-                    if (accounts[key].cart && Object.keys(accounts[key].cart).length > 0 && Object.keys(state.cart).length === 0) {
-                        state.cart = { ...accounts[key].cart };
-                    }
+                    state.wishlist = Array.isArray(accounts[key].wishlist) ? [...accounts[key].wishlist] : [];
+                    state.cart = (accounts[key].cart && typeof accounts[key].cart === 'object') ? { ...accounts[key].cart } : {};
                     showToast(`Welcome back, Summoner ${accounts[key].summonerName}!`, 'success');
                 }
             }
@@ -5770,12 +5761,12 @@
                 btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Syncing Summoner Sheet...</span>`;
             }
 
-            // If user provided a D&D Beyond link during Login/Sign Up, fetch and add it to their profile
-            if (ddbRaw) {
+            // If user provided a D&D Beyond link during Sign Up, fetch and add it to their profile
+            if (summonerAuthMode === 'signup' && ddbRaw) {
                 await saveDndBeyondLink(ddbRaw);
                 if (ddbInput) ddbInput.value = '';
             } else {
-                // Otherwise load their active or most recent saved character sheet
+                // On Sign In (or Sign Up without link), load their active or most recent saved character sheet
                 const acct = getSummonerAccounts()[key];
                 if (acct && Array.isArray(acct.characters) && acct.characters.length > 0) {
                     const activeId = acct.activeCharId || acct.characters[0].id;
@@ -5789,6 +5780,9 @@
                         renderFetchedDndBeyondCharacter(cachedChar.fullData);
                         renderRuneterraFullCharacterSheet(cachedChar.fullData);
                         applyDdbCharacterToMarketplace(true);
+                        if (cachedChar.fullData.campaign) {
+                            renderDndBeyondCampaignParty(cachedChar.fullData.campaign);
+                        }
                     } else if (activeId) {
                         await saveDndBeyondLink(String(activeId));
                     }
@@ -5797,7 +5791,8 @@
 
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span id="introAuthSubmitBtnLabel">Log In &amp; Enter Runeterra</span>`;
+                const labelText = summonerAuthMode === 'signup' ? 'Sign Up &amp; Enter Runeterra' : 'Sign In &amp; Enter Runeterra';
+                btn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span id="introAuthSubmitBtnLabel">${labelText}</span>`;
             }
 
             saveCurrentPlayerData();
@@ -5894,6 +5889,9 @@
                         renderFetchedDndBeyondCharacter(saved.fullData);
                         renderRuneterraFullCharacterSheet(saved.fullData);
                         applyDdbCharacterToMarketplace(false);
+                        if (saved.fullData.campaign) {
+                            renderDndBeyondCampaignParty(saved.fullData.campaign);
+                        }
                         renderIntroSummonerProfile();
                         if (enterAfter) enterRuneterraPortal('creation');
                         return;
@@ -5919,6 +5917,8 @@
             saveSummonerAccounts(accounts);
             if (acct.activeCharId) {
                 selectSummonerProfileCharacter(acct.activeCharId, false);
+            } else {
+                unsyncCharacterSheet();
             }
             renderIntroSummonerProfile();
             showToast('Removed character sheet from your Summoner Profile.', 'info');
@@ -5928,31 +5928,34 @@
             saveCurrentPlayerData();
             state.currentUser = null;
             localStorage.removeItem('runeterra_current_summoner');
+            unsyncCharacterSheet();
             renderIntroSummonerProfile();
-            showToast('Logged out of Summoner Profile.', 'info');
+            showToast('Signed out of Summoner Profile.', 'info');
         }
 
         function renderIntroSummonerProfile() {
             const authView = document.getElementById('introAuthFormView');
             const profileView = document.getElementById('introSummonerProfileView');
-            const syncBtnText = document.getElementById('introAuthSyncBtnText');
-            const syncBtnIcon = document.getElementById('introAuthSyncBtnIcon');
             const enterBtnText = document.getElementById('introEnterRuneterraBtnText');
             const headerLabel = document.getElementById('headerSummonerLabel');
             const headerIcon = document.getElementById('headerSummonerIcon');
+            const headerSignOutBtn = document.getElementById('headerSignOutBtn');
+            const introTopSignOutBtn = document.getElementById('introTopSignOutBtn');
 
             if (state.currentUser && state.currentUser.summonerName) {
                 if (authView) authView.classList.add('hidden');
                 if (profileView) profileView.classList.remove('hidden');
+                if (headerSignOutBtn) headerSignOutBtn.classList.remove('hidden');
+                if (introTopSignOutBtn) introTopSignOutBtn.classList.remove('hidden');
 
                 const accounts = getSummonerAccounts();
                 const key = state.currentUser.summonerName.toLowerCase();
                 const acct = accounts[key] || { summonerName: state.currentUser.summonerName, characters: [] };
                 const chars = Array.isArray(acct.characters) ? acct.characters : [];
-                const activeChar = chars.find(c => String(c.id) === String(acct.activeCharId)) || chars[0] || lastFetchedDdbChar;
+                const activeChar = acct.activeCharId
+                    ? chars.find(c => String(c.id) === String(acct.activeCharId))
+                    : lastFetchedDdbChar;
 
-                if (syncBtnText) syncBtnText.innerText = `${acct.summonerName}'s Profile (${chars.length})`;
-                if (syncBtnIcon) syncBtnIcon.className = 'fa-solid fa-user-check text-emerald-300';
                 if (enterBtnText) enterBtnText.innerText = activeChar ? `Enter as ${activeChar.name}` : `Enter Runeterra`;
                 if (headerLabel) headerLabel.innerText = acct.summonerName;
                 if (headerIcon) headerIcon.className = 'fa-solid fa-user-check text-emerald-400';
@@ -6013,10 +6016,10 @@
             } else {
                 if (authView) authView.classList.remove('hidden');
                 if (profileView) profileView.classList.add('hidden');
-                if (syncBtnText) syncBtnText.innerText = 'Summoner Login / Sign Up';
-                if (syncBtnIcon) syncBtnIcon.className = 'fa-solid fa-user-shield text-emerald-400';
+                if (headerSignOutBtn) headerSignOutBtn.classList.add('hidden');
+                if (introTopSignOutBtn) introTopSignOutBtn.classList.add('hidden');
                 if (enterBtnText) enterBtnText.innerText = 'Enter Runeterra';
-                if (headerLabel) headerLabel.innerText = 'Summoner Login';
+                if (headerLabel) headerLabel.innerText = 'Sign In';
                 if (headerIcon) headerIcon.className = 'fa-solid fa-user-shield text-emerald-400';
             }
         }
