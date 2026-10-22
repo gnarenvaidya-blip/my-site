@@ -2400,10 +2400,13 @@
         }
 
         function recalculateStartingGold() {
-            // If a D&D Beyond character sheet is linked, always keep their current GP in the Available Purse
-            if (lastFetchedDdbChar && typeof lastFetchedDdbChar.totalGP === 'number') {
-                state.baseGold = lastFetchedDdbChar.totalGP;
-                document.getElementById('charBaseGoldInput').value = lastFetchedDdbChar.totalGP;
+            // If a D&D Beyond character sheet is linked, always keep their original sheet GP as the base purse
+            if (lastFetchedDdbChar) {
+                const origGP = typeof lastFetchedDdbChar.baseTotalGP === 'number'
+                    ? lastFetchedDdbChar.baseTotalGP
+                    : (typeof lastFetchedDdbChar.totalGP === 'number' ? lastFetchedDdbChar.totalGP : 150);
+                state.baseGold = origGP;
+                document.getElementById('charBaseGoldInput').value = origGP;
                 return;
             }
 
@@ -2459,8 +2462,14 @@
            ========================================================================== */
         function addToCart(itemId) {
             state.cart[itemId] = (state.cart[itemId] || 0) + 1;
+            const fullDb = getFullDatabase();
+            const item = fullDb.find(i => i.id === itemId);
             recalculateTotals();
-            showToast('Item added to cart!', 'success');
+            if (lastFetchedDdbChar && item) {
+                showToast(`Purchased ${item.name} (-${item.costGP} GP) — Added to ${lastFetchedDdbChar.name}'s Character Sheet!`, 'success');
+            } else {
+                showToast('Item added to cart!', 'success');
+            }
         }
 
         function updateCartQty(itemId, change) {
@@ -2538,6 +2547,9 @@
             if (dedEl) dedEl.innerText = `${totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})} GP`;
 
             renderCartDrawer();
+            if (typeof syncMarketplacePurchasesToLinkedSheet === 'function') {
+                syncMarketplacePurchasesToLinkedSheet();
+            }
             if (typeof saveCurrentPlayerData === 'function') saveCurrentPlayerData();
         }
 
@@ -3472,7 +3484,9 @@
 
             // Currencies -> Total GP
             const cur = d.currencies || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
-            const totalGP = (cur.pp || 0) * 10 + (cur.gp || 0) + (cur.ep || 0) * 0.5 + (cur.sp || 0) * 0.1 + (cur.cp || 0) * 0.01;
+            const totalGP = parseFloat(((cur.pp || 0) * 10 + (cur.gp || 0) + (cur.ep || 0) * 0.5 + (cur.sp || 0) * 0.1 + (cur.cp || 0) * 0.01).toFixed(2));
+            const baseTotalGP = totalGP;
+            const baseCurrencies = { ...cur };
 
             // HP calculation
             const conMod = modOf(statMap.CON);
@@ -3609,10 +3623,14 @@
                 maxHp,
                 tempHp,
                 currencies: cur,
+                baseCurrencies,
                 totalGP: parseFloat(totalGP.toFixed(2)),
+                baseTotalGP,
                 inventoryCount: fullInventory.length,
                 topInventory: fullInventory.slice(0, 8),
                 fullInventory,
+                baseInventory: fullInventory.map(i => ({ ...i })),
+                baseWeaponsList: weaponsList.map(w => ({ ...w })),
                 campaign: d.campaign ? {
                     id: d.campaign.id,
                     name: d.campaign.name,
@@ -3678,9 +3696,9 @@
             // Weapons & Attacks
             const weaponsHtml = (c.weaponsList && c.weaponsList.length > 0)
                 ? c.weaponsList.map(w => `
-                    <div class="p-2.5 rounded-xl bg-stone-950/90 border border-stone-800 flex items-center justify-between gap-2 text-xs">
+                    <div class="p-2.5 rounded-xl ${w.isMarketplacePurchase ? 'bg-emerald-950/50 border-emerald-500/50' : 'bg-stone-950/90 border-stone-800'} border flex items-center justify-between gap-2 text-xs">
                         <div>
-                            <strong class="text-amber-100 font-bold block">${w.equipped ? '⚔️ ' : ''}${w.name}</strong>
+                            <strong class="text-amber-100 font-bold block">${w.equipped ? '⚔️ ' : ''}${w.name} ${w.isMarketplacePurchase ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-800 text-emerald-100 font-mono ml-1">Purchased</span>' : ''}</strong>
                             <span class="text-[10px] text-stone-400">${w.properties || 'Weapon Attack'}</span>
                         </div>
                         <div class="text-right font-mono">
@@ -3720,10 +3738,11 @@
             // Full Inventory
             const invHtml = (c.fullInventory && c.fullInventory.length > 0)
                 ? c.fullInventory.map(item => `
-                    <div class="flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-stone-950/80 border border-stone-800/80 text-xs">
+                    <div class="flex items-center justify-between py-1.5 px-2.5 rounded-lg ${item.isMarketplacePurchase ? 'bg-emerald-950/50 border-emerald-500/50' : 'bg-stone-950/80 border-stone-800/80'} border text-xs">
                         <div class="truncate pr-2">
                             <span class="text-amber-100 font-semibold">${item.equipped ? '<i class="fa-solid fa-shield-halved text-dndgold-400 mr-1" title="Equipped"></i>' : ''}${item.name}</span>
                             ${item.qty > 1 ? `<span class="text-[10px] text-dndgold-400 font-mono ml-1">×${item.qty}</span>` : ''}
+                            ${item.isMarketplacePurchase ? `<span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-800 text-emerald-100 font-mono ml-1">Purchased</span>` : ''}
                         </div>
                         <span class="text-[10px] text-stone-400 font-mono whitespace-nowrap">${(item.weight * item.qty).toFixed(1)} lb</span>
                     </div>
@@ -3992,18 +4011,137 @@
             if (strInput) strInput.value = strVal;
             state.strScore = strVal;
 
-            // Always update Available Purse with their exact current GP from D&D Beyond
-            if (typeof c.totalGP === 'number') {
+            // Always update Available Purse with their original sheet GP before cart deductions
+            const origGP = typeof c.baseTotalGP === 'number' ? c.baseTotalGP : c.totalGP;
+            if (typeof origGP === 'number') {
                 const goldIn = document.getElementById('charBaseGoldInput');
-                if (goldIn) goldIn.value = c.totalGP;
-                state.baseGold = c.totalGP;
+                if (goldIn) goldIn.value = origGP;
+                state.baseGold = origGP;
             }
 
-            renderMarketplaceSummonerBlock(c);
+            syncMarketplacePurchasesToLinkedSheet();
             recalculateTotals();
             renderMarketplace();
             if (!silent) {
                 showToast(`Synced ${c.name} to Summoner Profile (${matchedClass} Lvl ${state.level}, STR ${strVal}, Purse: ${c.totalGP} GP)!`, 'success');
+            }
+        }
+
+        function syncMarketplacePurchasesToLinkedSheet() {
+            if (!lastFetchedDdbChar) return;
+            const c = lastFetchedDdbChar;
+
+            // Ensure baseline snapshots exist even for previously cached sheets
+            if (typeof c.baseTotalGP !== 'number') {
+                c.baseTotalGP = typeof c.totalGP === 'number' ? c.totalGP : state.baseGold;
+            }
+            if (!c.baseCurrencies) {
+                c.baseCurrencies = c.currencies ? { ...c.currencies } : { pp: 0, gp: Math.floor(c.baseTotalGP), ep: 0, sp: 0, cp: 0 };
+            }
+            if (!Array.isArray(c.baseInventory)) {
+                c.baseInventory = (c.fullInventory || []).filter(i => !i.isMarketplacePurchase).map(i => ({ ...i }));
+            }
+            if (!Array.isArray(c.baseWeaponsList)) {
+                c.baseWeaponsList = (c.weaponsList || []).filter(w => !w.isMarketplacePurchase).map(w => ({ ...w }));
+            }
+
+            const fullDb = getFullDatabase();
+            let totalSpentGP = 0;
+            const mergedInventory = c.baseInventory.map(item => ({ ...item }));
+            const mergedWeapons = c.baseWeaponsList.map(w => ({ ...w }));
+
+            const strMod = Math.floor(((c.stats?.STR || state.strScore || 10) - 10) / 2);
+            const dexMod = Math.floor(((c.stats?.DEX || 10) - 10) / 2);
+            const pb = c.proficiencyBonus || 2;
+
+            for (const [id, qty] of Object.entries(state.cart)) {
+                if (!qty || qty <= 0) continue;
+                const item = fullDb.find(i => i.id === id);
+                if (!item) continue;
+
+                totalSpentGP += (item.costGP || 0) * qty;
+
+                const existingIdx = mergedInventory.findIndex(inv => inv.name.toLowerCase() === item.name.toLowerCase());
+                if (existingIdx >= 0) {
+                    mergedInventory[existingIdx].qty = (mergedInventory[existingIdx].qty || 1) + qty;
+                    mergedInventory[existingIdx].isMarketplacePurchase = true;
+                } else {
+                    mergedInventory.unshift({
+                        name: item.name,
+                        qty: qty,
+                        weight: item.weight || 0,
+                        equipped: true,
+                        type: item.category || 'Gear',
+                        rarity: item.rarity || 'Common',
+                        isMarketplacePurchase: true
+                    });
+                }
+
+                if (item.category === 'Weapons' || item.damage) {
+                    const alreadyWeapon = mergedWeapons.some(w => w.name.toLowerCase() === item.name.toLowerCase());
+                    if (!alreadyWeapon) {
+                        const propStr = [item.damage, item.mastery ? `Mastery: ${item.mastery}` : ''].filter(Boolean).join(' • ');
+                        const isFinesseOrRanged = (item.desc || '').toLowerCase().includes('finesse') || (item.subsection || '').toLowerCase().includes('ranged');
+                        const atkMod = isFinesseOrRanged ? Math.max(strMod, dexMod) : strMod;
+                        const toHit = atkMod + pb;
+                        mergedWeapons.unshift({
+                            name: qty > 1 ? `${item.name} (×${qty})` : item.name,
+                            equipped: true,
+                            toHit: toHit >= 0 ? `+${toHit}` : `${toHit}`,
+                            damage: item.damage || 'Special',
+                            properties: propStr || 'Marketplace Weapon',
+                            isMarketplacePurchase: true
+                        });
+                    }
+                }
+            }
+
+            const newTotalGP = parseFloat((c.baseTotalGP - totalSpentGP).toFixed(2));
+            c.totalGP = newTotalGP;
+
+            // Convert updated totalGP into clean coin breakdown while preserving exact value
+            if (totalSpentGP === 0 && c.baseCurrencies) {
+                c.currencies = { ...c.baseCurrencies };
+            } else {
+                const absGP = Math.max(0, newTotalGP);
+                const wholeGP = Math.floor(absGP);
+                const remAfterGP = Math.round((absGP - wholeGP) * 100);
+                const sp = Math.floor(remAfterGP / 10);
+                const cp = remAfterGP % 10;
+                c.currencies = {
+                    pp: 0,
+                    gp: newTotalGP < 0 ? Math.ceil(newTotalGP) : wholeGP,
+                    ep: 0,
+                    sp: sp,
+                    cp: cp
+                };
+            }
+
+            c.fullInventory = mergedInventory;
+            c.inventoryCount = mergedInventory.reduce((sum, i) => sum + (i.qty || 1), 0);
+            c.topInventory = mergedInventory.slice(0, 8);
+            c.weaponsList = mergedWeapons;
+
+            // Persist and re-render all linked character sheet views immediately
+            localStorage.setItem('runeterra_last_ddb_char', JSON.stringify(c));
+            if (state.currentUser && state.currentUser.summonerName) {
+                const accounts = getSummonerAccounts();
+                const key = state.currentUser.summonerName.toLowerCase();
+                if (accounts[key] && Array.isArray(accounts[key].characters)) {
+                    const idx = accounts[key].characters.findIndex(ch => String(ch.id) === String(c.id));
+                    if (idx >= 0) {
+                        accounts[key].characters[idx].totalGP = c.totalGP;
+                        accounts[key].characters[idx].fullData = c;
+                        saveSummonerAccounts(accounts);
+                    }
+                }
+            }
+
+            renderRuneterraFullCharacterSheet(c);
+            renderFetchedDndBeyondCharacter(c);
+            renderMarketplaceSummonerBlock(c);
+            if (typeof renderIntroSummonerProfile === 'function') {
+                renderIntroSummonerProfile();
             }
         }
 
